@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function NavBar() {
+function NavBarCom() {
   return (
     <nav className="bg-gray-800 text-white p-4">
       <div className="container mx-auto flex items-center justify-between">
@@ -30,4 +30,4 @@ function NavBar() {
   );
 }
 
-export default NavBar;
+export default NavBarCom;
