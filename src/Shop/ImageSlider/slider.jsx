@@ -23,7 +23,7 @@ const ProductSlider = ({ images }) => {
     <Slider {...settings}>
       {images.map((image, index) => (
         <div key={index} className=' place-items-center ' style={{display:"flex",justifyContent:"center",alignContent:"center",paddingLeft:50}}>
-          <img src={image} alt={`Product ${image} `} className="slider-image " />
+          <img src={`/${image} `} alt={`Product ${image} `} className="slider-image " />
         </div>
       ))}
     </Slider>
