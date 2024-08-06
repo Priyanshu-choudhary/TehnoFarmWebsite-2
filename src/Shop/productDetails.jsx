@@ -36,6 +36,8 @@ const ProductDetail = () => {
               ))}
             </ul>
             <p className="card-text mt-2"><strong>For purchase or dealership contact:</strong><br /> {product.contactNumber}</p>
+            
+            <a className='mt-3 btn bg-yellow-400' href='https://wa.me/8126967580'><span className="fa fa-brands fa-whatsapp" /> Order on Whatsapp</a>
           </div>
         </div>
       </div>

@@ -20,7 +20,6 @@ function HeroSection() {
                             <div className="intro-excerpt">
 
                                 <h2 className='text-5xl text-yellow-400 font-bold'>Looking  </h2>
-
                                 <h2 className='text-5xl text-black font-bold'> for Advanced Motor Protection Solutions?</h2>
                                 <p className="mb-4 my-5 text-black">Highlight your focus on safeguarding agricultural machinery with state-of-the-art technology.</p>
                                 <p><a href="/shop" className="btn btn-secondary me-2 font-bold">Shop Now</a><a href="/shop" className="btn btn-black-outline">Explore</a></p>
