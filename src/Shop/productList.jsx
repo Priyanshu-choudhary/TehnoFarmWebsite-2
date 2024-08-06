@@ -22,7 +22,7 @@ const ProductList = () => {
                 <p className="card-text single-line">{product.productDescription}</p>
                 <p className="card-text mt-2"><strong>Price:</strong> ₹{product.productPrice}</p>
                 <p className="card-text mt-2"><strong>For purchase or dealership contact:</strong><br /> {product.contactNumber}</p>
-                <Link to={`/product/${product.Id}`} className="btn btn-primary mt-3">View Details</Link>
+                <Link to={`/product/${product.Id}`} className="btn bg-yellow-400 mt-3">View Details</Link>
               </div>
             </div>
           </div>
