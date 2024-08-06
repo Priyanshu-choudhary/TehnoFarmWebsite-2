@@ -15,10 +15,10 @@ function ProductionSection() {
               {/* End Column 1 */}
               {/* Start Column 2 */}
               <div className="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-                <a className="product-item" href="cart.html">
+                <a className="product-item" href="product/3">
                   <img src="bada_1.jpg" className="img-fluid product-thumbnail" />
                   <h3 className="product-title">BADA OPERATOR</h3>
-                  <strong className="product-price">₹100</strong>
+                  <strong className="product-price">₹1100</strong>
                   <span className="icon-cross">
                     <img src="bada_1.jpg" className="img-fluid" />
                   </span>
@@ -27,24 +27,24 @@ function ProductionSection() {
               {/* End Column 2 */}
               {/* Start Column 3 */}
               <div className="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-                <a className="product-item" href="cart.html">
-                  <img src="5Led_1.jpg" className="img-fluid product-thumbnail" />
-                  <h3 className="product-title">5 LED OPERATOR</h3>
-                  <strong className="product-price">₹100</strong>
+                <a className="product-item" href="/product/5">
+                  <img src="meter_1.jpg" className="img-fluid product-thumbnail" />
+                  <h3 className="product-title">DIGITAL METER</h3>
+                  <strong className="product-price">₹400</strong>
                   <span className="icon-cross">
-                    <img src="5Led_1.jpg" className="img-fluid" />
+                    <img src="meter_1.jpg" className="img-fluid" />
                   </span>
                 </a>
               </div>
               {/* End Column 3 */}
               {/* Start Column 4 */}
               <div className="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-                <a className="product-item" href="cart.html">
-                  <img src="mobile_2.jpg" className="img-fluid product-thumbnail" />
+                <a className="product-item" href="product/4">
+                  <img src="mobile_1.jpg" className="img-fluid product-thumbnail" />
                   <h3 className="product-title">MOBILE OPERATOR</h3>
-                  <strong className="product-price">₹100</strong>
+                  <strong className="product-price">₹2200</strong>
                   <span className="icon-cross">
-                    <img src="mobile_2.jpg" className="img-fluid" />
+                    <img src="mobile_1.jpg" className="img-fluid" />
                   </span>
                 </a>
               </div>

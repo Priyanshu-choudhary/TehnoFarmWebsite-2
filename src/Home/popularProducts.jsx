@@ -16,7 +16,7 @@ function PopularProducts() {
                   <div className="pt-3">
                     <h3 className="font-bold text-3xl">MUNSI OPERATOR</h3>
                     <p>SINGLE PHASE PREVENTOR, AUTOMATIC OPERATOR</p>
-                    <p><a href="#">Read More</a></p>
+                    <p className='btn  mt-3 bg-yellow-400'><a href={`/product/3`}>Read More</a></p>
                   </div>
                 </div>
               </div>
@@ -28,7 +28,7 @@ function PopularProducts() {
                   <div className="pt-3">
                     <h3>SUBMERSIBLE PANEL</h3>
                     <p>Digital panel</p>
-                    <p><a href="#">Read More</a></p>
+                    <p className='btn  mt-12 bg-yellow-400'><a href={`/product/6`}>Read More</a></p>
                   </div>
                 </div>
               </div>
@@ -40,7 +40,7 @@ function PopularProducts() {
                   <div className="pt-3">
                     <h3>DIGITAL METER</h3>
                     <p>Volt and Ampere meter</p>
-                    <p><a href="#">Read More</a></p>
+                    <p className='btn  mt-12 bg-yellow-400'><a href={`/product/5`}>Read More</a></p>
                   </div>
                 </div>
               </div>
