@@ -24,9 +24,9 @@ const ProductDetail = () => {
         <div className="col-md-6">
           <div className="card-body">
             
-            <h5 className="card-title">{product.productTitle}</h5>
+            <h5 className="card-title font-bold text-2xl mb-3">{product.productTitle}</h5>
             <p className="card-text">{product.productDescription}</p>
-            <p className="card-text"><strong>Price:</strong> ₹{product.productPrice}</p>
+            <p className="card-text "><strong>Price:</strong> <p className='text-2xl mx-4 my-2' color='green'> ₹{product.productPrice}</p></p>
             <ul className="list-group list-group-flush">
               <p className="card-text"><strong>Features:</strong></p>
               {product.features.map((feature, idx) => (
