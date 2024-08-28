@@ -6,12 +6,18 @@ import products from './ProductJson';
 import ProductSlider from './ImageSlider/slider';
 import './productDetail.css';
 
-const ProductDetail = () => {
-  const { id } = useParams();
-  const product = products.find(p => p.Id === parseInt(id));
+const ProductDetail = ({ propsId }) => {
+  // Use useParams to get the id from the URL
+  const { id: paramId } = useParams();
+
+  // Determine which ID to use: prefer propsId, fall back to paramId
+  const productId = propsId ? parseInt(propsId) : parseInt(paramId);
+
+  // Find the product based on the determined ID
+  const product = products.find(p => p.Id === productId);
 
   if (!product) {
-    return <div>Product not found</div>;
+    return <div><br /><hr /></div>;
   }
 
   return (
@@ -23,10 +29,9 @@ const ProductDetail = () => {
         </div>
         <div className="col-md-6">
           <div className="card-body">
-            
             <h5 className="card-title font-bold text-2xl mb-3">{product.productTitle}</h5>
             <p className="card-text">{product.productDescription}</p>
-            <p className="card-text "><strong>Price:</strong> <p className='text-2xl mx-4 my-2' color='green'> ₹{product.productPrice}</p></p>
+            <p className="card-text "><strong>Price:</strong> <span className='text-2xl mx-4 my-2' style={{ color: 'green' }}>₹{product.productPrice}</span></p>
             <ul className="list-group list-group-flush">
               <p className="card-text"><strong>Features:</strong></p>
               {product.features.map((feature, idx) => (
@@ -36,8 +41,9 @@ const ProductDetail = () => {
               ))}
             </ul>
             <p className="card-text mt-2"><strong>For purchase or dealership contact:</strong><br /> {product.contactNumber}</p>
-            
-            <a className='mt-3 btn bg-yellow-400' href='https://wa.me/8126967580'><span className="fa fa-brands fa-whatsapp" /> Order on Whatsapp</a>
+            <a className='mt-3 btn bg-yellow-400' href={`https://wa.me/${product.contactNumber}`}>
+              <span className="fa fa-brands fa-whatsapp" /> Order on Whatsapp
+            </a>
           </div>
         </div>
       </div>

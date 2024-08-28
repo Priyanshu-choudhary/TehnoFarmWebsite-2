@@ -7,6 +7,7 @@ import NotFoundPage from './ErrorsMessages/PageNotFound';
 import NavBarCom from './NavBr/NavBrCom';
 import ShopPage from './Shop/ShopPage';
 import ProductDetail from './Shop/productDetails';
+import Dashbord from './Dashbord/Dashbord';
 // import NavBar from './NavBr/NavBrCom';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route path="/contact" element={<ContactPage />} />  */}
         <Route path="*" element={<NotFoundPage />} /> {/* Add this route */}
         <Route path="/product/:id" element={<ProductDetail />} />
+        <Route path="/Dashbord" element={<Dashbord />} />
       </Routes>
     </Router>
   );

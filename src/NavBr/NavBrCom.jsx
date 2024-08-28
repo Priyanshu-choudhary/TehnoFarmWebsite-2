@@ -15,10 +15,11 @@ function NavBarCom() {
         </button>
         <div className="hidden md:flex md:items-center md:space-x-4">
           <Link className="hover:text-gray-400" to="/">Home</Link>
-          <Link className="hover:text-gray-400" to="/shop">Shop</Link>
+          <Link className="hover:text-gray-400" to="/shop">Products</Link>
           <Link className="hover:text-gray-400" to="/about">About us</Link>
           <Link className="hover:text-gray-400" to="/services">Services</Link>
           <Link className="hover:text-gray-400" to="/contact">Contact us</Link>
+          <Link className="hover:text-gray-400" to="/Dashbord" >Dashbord</Link>
         </div>
         <div className="hidden md:flex md:space-x-4">
           <Link className="hover:text-gray-400" to="#"><img src="/user.svg" alt="User" /></Link>

@@ -4,7 +4,7 @@ function Footer() {
     return (
         <div>
             {/* Start Footer Section */}
-            <footer className="footer-section">
+            <footer className="footer-section" >
                 <div className="container relative">
                     <div className="sofa-img">
                         <img src="bigLogo.png" alt="Image" className="img-fluid" />
@@ -12,7 +12,7 @@ function Footer() {
                     <div className="row">
                         <div className="col-lg-8">
                             <div className="subscription-form">
-                                <h3 className="d-flex align-items-center"><span className="me-1"><img src="envelope-outline.svg" alt="Image" className="img-fluid" /></span><span>Subscribe to Newsletter</span></h3>
+                                <h3 className="d-flex align-items-center"><span className="me-1"><img src="envelope-outline.svg" alt="Image" className="img-fluid" /></span><span style={{ color: "#FFD52C" }}>Subscribe to Newsletter</span></h3>
                                 <form action="#" className="row g-3">
                                     <div className="col-auto">
                                         <input type="text" className="form-control" placeholder="Enter your name" />
@@ -21,7 +21,7 @@ function Footer() {
                                         <input type="email" className="form-control" placeholder="Enter your email" />
                                     </div>
                                     <div className="col-auto">
-                                        <button className="btn btn-primary">
+                                        <button className="btn btn-primary" style={{ backgroundColor: "#000000", borderColor: "#000000" }}>
                                             <span className="fa fa-paper-plane" />
                                         </button>
                                     </div>
@@ -31,16 +31,16 @@ function Footer() {
                     </div>
                     <div className="row g-5 mb-5">
                         <div className="col-lg-4">
-                            <div className="mb-4 footer-logo-wrap"><a href="#" className="footer-logo">TechnoFarm<span>.</span></a></div>
+                            <div className="mb-4 footer-logo-wrap"><a href="#" className="footer-logo " style={{ color: "#FFD52C" }}>TechnoFarm<span>.</span></a></div>
                             <p className="mb-4">TECHNOFARM was founded in 2018 by two FARMERS. It is technology based company aimed to deliver most reliable and technologically advanced products.
                                 We mainly deal in agricultural electronic products . We are situated in Village Rahakra, Muzaffarnagar UP. Being farmer, we can understand the problems of a farmer and we design our products accordingly. You can visit our manufaturing facility anytime in Rahakra.
 
                             </p>
                             <ul className="list-unstyled custom-social">
-                                <li><a href="#"><span className="fa fa-brands fa-facebook-f" /></a></li>
-                                <li><a href="#"><span className="fa fa-brands fa-twitter" /></a></li>
-                                <li><a href="#"><span className="fa fa-brands fa-instagram" /></a></li>
-                                <li><a href="#"><span className="fa fa-brands fa-linkedin" /></a></li>
+                                <li><a href="#"><span className="fa fa-brands fa-facebook-f" style={{ color: "#000000" }} /></a></li>
+                                <li><a href="#"><span className="fa fa-brands fa-twitter" style={{ color: "#000000" }} /></a></li>
+                                <li><a href="#"><span className="fa fa-brands fa-instagram" style={{ color: "#000000" }} /></a></li>
+                                <li><a href="#"><span className="fa fa-brands fa-linkedin" style={{ color: "#000000" }} /></a></li>
                             </ul>
                         </div>
                         <div className="col-lg-8">
@@ -57,15 +57,32 @@ function Footer() {
                                 </div>
 
                                 <div className="col-6 col-sm-6 col-md-5">
-                                <p className='text-xl font-bold underline'>Team</p>
-                                    <ul className="list-unstyled mt-8">
-                                       
-                                        <li><a href="#">Jobs</a></li>
-                                        <li><a href="#">Our team</a></li>
-                                        <li><a href="#">Leadership</a></li>
-                                        <li><a href="#">Privacy Policy</a></li>
+                                    <p className='text-xl font-bold underline mb-4'>Contact Us</p>
+                                    <ul className="list-unstyled mt-4 space-y-6">
+                                        <li className="space-y-1">
+                                            <a href="tel:+916398589793" className="text-gray-700 hover:text-blue-500 block">
+                                                📞 +91 6398589793
+                                            </a>
+                                            <a href="tel:+919997044372" className="text-gray-700 hover:text-blue-500 block">
+                                                📞 +91 9997044372
+                                            </a>
+                                            <a href="tel:+918126967580" className="text-gray-700 hover:text-blue-500 block">
+                                                📞 +91 8126967580
+                                            </a>
+                                        </li>
+                                        <li className="border-t border-dotted pt-2">
+                                            <a href="mailto:pkdhiman62@gmail.com" className="text-gray-700 hover:text-blue-500 block">
+                                                ✉️ pkdhiman62@gmail.com
+                                            </a>
+                                        </li>
+                                        <li className="border-t border-dotted pt-2">
+                                            <a href="https://goo.gl/maps/example" target="_blank" rel="noopener noreferrer" className="text-gray-700 hover:text-blue-500 block">
+                                                📍 Rahekra, Muzaffarnagar, UP, India
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
+
                                 <div className="col-6 col-sm-6 col-md-3">
                                     <p className='text-xl font-bold underline'>Products</p>
                                     <ul className="list-unstyled mt-8">
