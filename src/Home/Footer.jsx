@@ -6,28 +6,9 @@ function Footer() {
             {/* Start Footer Section */}
             <footer className="footer-section" >
                 <div className="container relative">
-                    <div className="sofa-img">
-                        <img src="bigLogo.png" alt="Image" className="img-fluid" />
-                    </div>
+                    
                     <div className="row">
-                        <div className="col-lg-8">
-                            <div className="subscription-form">
-                                <h3 className="d-flex align-items-center"><span className="me-1"><img src="envelope-outline.svg" alt="Image" className="img-fluid" /></span><span style={{ color: "#FFD52C" }}>Subscribe to Newsletter</span></h3>
-                                <form action="#" className="row g-3">
-                                    <div className="col-auto">
-                                        <input type="text" className="form-control" placeholder="Enter your name" />
-                                    </div>
-                                    <div className="col-auto">
-                                        <input type="email" className="form-control" placeholder="Enter your email" />
-                                    </div>
-                                    <div className="col-auto">
-                                        <button className="btn btn-primary" style={{ backgroundColor: "#000000", borderColor: "#000000" }}>
-                                            <span className="fa fa-paper-plane" />
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                        <hr />
                     </div>
                     <div className="row g-5 mb-5">
                         <div className="col-lg-4">
