@@ -30,7 +30,7 @@ function HomePage() {
 
       <WhyChooseUs />
       <HelpSection />
-      <PopularProducts />
+      {/* <PopularProducts /> */}
       <TestimonialSlider />
       <TeamComponent/>
       <Footer />

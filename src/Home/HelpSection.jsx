@@ -23,7 +23,7 @@ function HelpSection() {
                   <li className='border-2 rounded p-2 m-2'>Ensure Easy Integration with Your Existing Systems</li>
                   <li className='border-2 rounded p-2 m-2'>New Microcontroller Technology Benefit Your Operations</li>
                 </ul>
-                <p><a herf="#" className="btn  bg-yellow-400">Explore</a></p>
+                {/* <p><a herf="#" className="btn  bg-yellow-400">Explore</a></p> */}
               </div>
             </div>
           </div>
