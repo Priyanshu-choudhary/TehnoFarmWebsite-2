@@ -69,4 +69,18 @@
   .fa-chevron-left, .fa-chevron-right {
     font-size: 24px;
   }
-  
+/* src/components/TestimonialSlider.css */
+
+.testimonial-section {
+  padding: 20px;
+}
+
+.testimonial-slide img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.slick-dots {
+  bottom: 10px;
+}
