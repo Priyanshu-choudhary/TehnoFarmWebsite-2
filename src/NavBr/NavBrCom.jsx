@@ -20,8 +20,8 @@ function NavBarCom() {
           <Link className="hover:text-gray-400" to="/Services">Services</Link>
         </div>
         <div className="hidden md:flex md:space-x-4">
-          <Link className="hover:text-gray-400" to="#"><img src="/user.svg" alt="User" /></Link>
-          <Link className="hover:text-gray-400" to="/cart"><img src="/cart.svg" alt="Cart" /></Link>
+          <Link className="hover:text-gray-400" to="https://technofarm.in/login"><img src="/user.svg" alt="User" /></Link>
+          {/* <Link className="hover:text-gray-400" to="/cart"><img src="/cart.svg" alt="Cart" /></Link> */}
         </div>
       </div>
     </nav>
