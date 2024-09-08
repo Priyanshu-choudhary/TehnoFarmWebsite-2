@@ -17,7 +17,7 @@ function NavBarCom() {
           <Link className="hover:text-gray-400" to="/">Home</Link>
           <Link className="hover:text-gray-400" to="/shop">Products</Link>
           <Link className="hover:text-gray-400" to="/AboutUs">About us</Link>
-          <Link className="hover:text-gray-400" to="/services">Services</Link>
+          <Link className="hover:text-gray-400" to="/Services">Services</Link>
         </div>
         <div className="hidden md:flex md:space-x-4">
           <Link className="hover:text-gray-400" to="#"><img src="/user.svg" alt="User" /></Link>
