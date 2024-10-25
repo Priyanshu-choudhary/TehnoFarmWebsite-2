@@ -7,9 +7,10 @@ import NotFoundPage from './ErrorsMessages/PageNotFound';
 import NavBarCom from './NavBr/NavBrCom';
 import ShopPage from './Shop/ShopPage';
 import ProductDetail from './Shop/productDetails';
-import Dashbord from './Dashbord/Dashbord';
 import AboutUs from './Home/Aboutus/AboutUs';
 import Service from './Services/Service';
+import ShowSales from './Dashboard/Sales/ShowSales';
+import Login from './Dashboard/Login/Login';
 // import NavBar from './NavBr/NavBrCom';
 
 function App() {
@@ -18,17 +19,15 @@ function App() {
       <NavBarCom />
       <Routes>
         <Route path="/" element={<HomePage />} />
-         <Route path="/shop" element={<ShopPage />} />
-        {/* <Route path="/about" element={<AboutPage />} />
-        <Route path="/services" element={<ServicesPage />} />
-        <Route path="/blog" element={<BlogPage />} />
-        <Route path="/contact" element={<ContactPage />} />  */}
+        <Route path="/shop" element={<ShopPage />} />
         <Route path="*" element={<NotFoundPage />} /> {/* Add this route */}
         <Route path="/product/:id" element={<ProductDetail />} />
-        <Route path="/Dashbord" element={<Dashbord />} />
+        
         <Route path="/AboutUs" element={<AboutUs />} />
         <Route path="/Services" element={<Service />} />
-
+        
+        <Route path="/ShowSales" element={<ShowSales />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </Router>
   );
