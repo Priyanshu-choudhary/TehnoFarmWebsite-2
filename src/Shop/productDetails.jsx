@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import products from './ProductJson';
 import ProductSlider from './ImageSlider/slider';
 import './productDetail.css';
+import NavBarCom from '../NavBr/NavBrCom';
 
 const ProductDetail = ({ propsId }) => {
   // Use useParams to get the id from the URL
@@ -21,6 +22,9 @@ const ProductDetail = ({ propsId }) => {
   }
 
   return (
+    <div>
+       <NavBarCom />
+   
     <div className="container mt-5">
       <h1 className="text-center font-bold text-4xl mb-5">{product.productTitle}</h1>
       <div className="row">
@@ -47,6 +51,7 @@ const ProductDetail = ({ propsId }) => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

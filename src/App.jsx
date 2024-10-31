@@ -11,23 +11,28 @@ import AboutUs from './Home/Aboutus/AboutUs';
 import Service from './Services/Service';
 import ShowSales from './Dashboard/Sales/ShowSales';
 import Login from './Dashboard/Login/Login';
+import SaleDetails from './Dashboard/Sales/SalesDeatils';
+import AddSaleForm from './Dashboard/Sales/AddSale';
+import ShowDeletedSales from './Dashboard/Sales/ShowDeletedSales';
 // import NavBar from './NavBr/NavBrCom';
 
 function App() {
   return (
     <Router>
-      <NavBarCom />
+     
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/shop" element={<ShopPage />} />
         <Route path="*" element={<NotFoundPage />} /> {/* Add this route */}
         <Route path="/product/:id" element={<ProductDetail />} />
-        
         <Route path="/AboutUs" element={<AboutUs />} />
         <Route path="/Services" element={<Service />} />
         
         <Route path="/ShowSales" element={<ShowSales />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/sale/party/:id" element={<SaleDetails />} />
+        <Route path="/addSale" element={<AddSaleForm />} />
+        <Route path="/ShowDeletedSales" element={<ShowDeletedSales />} />
       </Routes>
     </Router>
   );

@@ -11,6 +11,7 @@ import Footer from './Footer';
 import ProductList from '../Shop/productList';
 import ProductDetail from '../Shop/productDetails';
 import TeamComponent from '../Team/TEamMember';
+import NavBarCom from '../NavBr/NavBrCom';
 
 function HomePage() {
   // Create an array of IDs from 1 to 10
@@ -18,6 +19,7 @@ function HomePage() {
 
   return (
     <div>
+       <NavBarCom />
       {/* <NavBar /> */}
       <HeroSection />
       {/* <ProductionSection /> */}

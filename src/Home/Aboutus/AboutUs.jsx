@@ -13,6 +13,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
+import NavBarCom from "../../NavBr/NavBrCom";
 const teamMembers = [
   {
     id: 1,
@@ -36,7 +37,7 @@ const teamMembers = [
 const AboutUs = () => {
   return (
     <div>
-
+   <NavBarCom />
       <div className="about-us">
         <div className="aboutUsInfo ">
           <h1
