@@ -10,6 +10,7 @@ import api from '/src/API'; // Make sure you have a suitable API utility
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
+import NavbarTechnoFarm from '../../NavBr/NavBarTechnoFarmOriginal';
 
 const AddSaleForm = () => {
   const [loading, setLoading] = useState(true);
@@ -167,7 +168,10 @@ const AddSaleForm = () => {
 
 
   return (
-    <Container maxWidth="md">
+   <div>
+     <NavbarTechnoFarm/>
+     <Container maxWidth="md">
+       
       <Typography variant="h4" gutterBottom align="center">
         Add New Sale
       </Typography>
@@ -343,6 +347,7 @@ const AddSaleForm = () => {
         </Box>
       </form>
     </Container>
+   </div>
   );
 };
 

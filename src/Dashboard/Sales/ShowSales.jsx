@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import api from '/src/API';
 import { useNavigate } from 'react-router-dom';
+import NavbarTechnoFarm from '../../NavBr/NavBarTechnoFarmOriginal';
 
 const ShowSales = () => {
     const [sales, setSales] = useState([]);
@@ -47,7 +48,10 @@ const ShowSales = () => {
         navigate(`/sale/party/${id}`);
     };
     return (
-        <div className="p-4">
+        
+       <div>
+        <NavbarTechnoFarm/>
+         <div className="p-4">
        <div className='flex' style={{justifyContent:"space-between"}}>
        <h2 className="text-3xl font-semibold text-gray-800 mb-4">Sales List</h2>
        <button className='bg-blue-400 rounded-md font-bold px-2 h-10 hover:bg-blue-600' onClick={()=>{navigate(`/addSale`)}} >
@@ -87,6 +91,7 @@ const ShowSales = () => {
     </div>
 
 
+       </div>
     );
 };
 

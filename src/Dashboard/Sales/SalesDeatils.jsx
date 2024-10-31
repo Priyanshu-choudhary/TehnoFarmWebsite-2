@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import api from '/src/API';
 import DeleteIcon from '@mui/icons-material/Delete';
+import NavbarTechnoFarm from '../../NavBr/NavBarTechnoFarmOriginal';
 export default function SaleDetails() {
     const { id } = useParams();
     const [sale, setSale] = useState(null);
@@ -104,6 +105,9 @@ export default function SaleDetails() {
         }
     };
     return (
+        <div>
+            
+        <NavbarTechnoFarm/>
         <div className="p-6 bg-white shadow-md rounded-lg">
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
                 <span className="text-lg">Party: {sale.party.name}</span>
@@ -328,6 +332,7 @@ export default function SaleDetails() {
                     </div>
                 )}
 
+        </div>
         </div>
     );
 }

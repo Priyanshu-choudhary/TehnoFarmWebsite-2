@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import api from '/src/API';
 import { useNavigate } from 'react-router-dom';
+import NavbarTechnoFarm from '../../NavBr/NavBarTechnoFarmOriginal';
 
 const ShowDeletedSales = () => {
     const [deletedSales, setDeletedSales] = useState([]);
@@ -44,6 +45,9 @@ const ShowDeletedSales = () => {
     }
 
     return (
+
+      <div>
+          <NavbarTechnoFarm/>
         <div className="p-4">
             <h2 className="text-3xl font-semibold text-gray-800 mb-4">Deleted Sales Entries</h2>
             <div className="overflow-x-auto">
@@ -81,6 +85,7 @@ const ShowDeletedSales = () => {
                 </table>
             </div>
         </div>
+      </div>
     );
 };
 
