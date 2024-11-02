@@ -14,6 +14,9 @@ import Login from './Dashboard/Login/Login';
 import SaleDetails from './Dashboard/Sales/SalesDeatils';
 import AddSaleForm from './Dashboard/Sales/AddSale';
 import ShowDeletedSales from './Dashboard/Sales/ShowDeletedSales';
+import ShowPurchase from './Purchase/Purchase';
+import AddPurchaseForm from './Purchase/AddPurchase';
+import ShowDeletedPurchases from './Purchase/ShowDeletedPurchase';
 // import NavBar from './NavBr/NavBrCom';
 
 function App() {
@@ -33,6 +36,10 @@ function App() {
         <Route path="/sale/party/:id" element={<SaleDetails />} />
         <Route path="/addSale" element={<AddSaleForm />} />
         <Route path="/ShowDeletedSales" element={<ShowDeletedSales />} />
+        <Route path="/ShowPurchase" element={<ShowPurchase />} />
+        <Route path="/AddPurchase" element={<AddPurchaseForm />} />
+        <Route path="/ShowDeletedPurchases" element={<ShowDeletedPurchases />} />
+
       </Routes>
     </Router>
   );

@@ -41,13 +41,13 @@ function NavbarTechnoFarm() {
 
   const customLinks = {
     SALE: { show: 'http://localhost:5173/showsales', add: 'http://localhost:5173/addSale' },
-    PURCHASE: { show: 'http://localhost:8080/purchase', add: 'http://localhost:8080/purchase/add' },
+    PURCHASE: { show: '/showPurchase', add: '/AddPurchase' },
     PRODUCTION: { show: 'http://localhost:8080/production', add: 'http://localhost:8080/production/add' },
     PARTY: { show: 'http://localhost:8080/party/', add: 'http://localhost:8080/party/add' },
     PRODUCT: { show: 'http://localhost:8080/product/', add: 'http://localhost:8080/product/add' },
     COMPONENT: { show: 'http://localhost:8080/component/', add: 'http://localhost:8080/component/add' },
     EMPLOYEE: { show: 'http://localhost:8080/employee/', add: 'http://localhost:8080/employee/add' },
-    OTHER: { show: '/ShowDeletedSales', add: 'http://localhost:8080/other/add' },
+    OTHER: { show: '/ShowDeletedSales', add: 'ShowDeletedPurchases' },
   };
 
   return (
@@ -68,12 +68,12 @@ function NavbarTechnoFarm() {
                   <ul className="dropdown-menu">
                     <li>
                       <a href={customLinks[menu].show} className="dropdown-item">
-                        <RemoveRedEyeOutlinedIcon/> SHOW
+                        <RemoveRedEyeOutlinedIcon /> SHOW
                       </a>
                     </li>
                     <li>
                       <a href={customLinks[menu].add} className="dropdown-item">
-                        <AddCircleOutlineOutlinedIcon/> ADD NEW
+                        <AddCircleOutlineOutlinedIcon /> ADD NEW
                       </a>
                     </li>
                   </ul>
