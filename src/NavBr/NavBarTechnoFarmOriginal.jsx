@@ -42,9 +42,9 @@ function NavbarTechnoFarm() {
   const customLinks = {
     SALE: { show: 'http://localhost:5173/showsales', add: 'http://localhost:5173/addSale' },
     PURCHASE: { show: '/showPurchase', add: '/AddPurchase' },
-    PRODUCTION: { show: 'http://localhost:8080/production', add: 'http://localhost:8080/production/add' },
+    PRODUCTION: { show: '/ShowProduction', add: '/AddProduction' },
     PARTY: { show: 'http://localhost:8080/party/', add: 'http://localhost:8080/party/add' },
-    PRODUCT: { show: 'http://localhost:8080/product/', add: 'http://localhost:8080/product/add' },
+    PRODUCT: { show: '/ShowProduct', add: '/AddProduct' },
     COMPONENT: { show: 'http://localhost:8080/component/', add: 'http://localhost:8080/component/add' },
     EMPLOYEE: { show: 'http://localhost:8080/employee/', add: 'http://localhost:8080/employee/add' },
     OTHER: { show: '/ShowDeletedSales', add: 'ShowDeletedPurchases' },

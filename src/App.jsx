@@ -17,6 +17,10 @@ import ShowDeletedSales from './Dashboard/Sales/ShowDeletedSales';
 import ShowPurchase from './Purchase/Purchase';
 import AddPurchaseForm from './Purchase/AddPurchase';
 import ShowDeletedPurchases from './Purchase/ShowDeletedPurchase';
+import ShowProduct from './Product/ShowProduct';
+import ShowProduction from './Production/ShowProduction';
+import AddProduction from './Production/AddProduction';
+import AddProduct from './Product/AddPRoduct';
 // import NavBar from './NavBr/NavBrCom';
 
 function App() {
@@ -39,6 +43,10 @@ function App() {
         <Route path="/ShowPurchase" element={<ShowPurchase />} />
         <Route path="/AddPurchase" element={<AddPurchaseForm />} />
         <Route path="/ShowDeletedPurchases" element={<ShowDeletedPurchases />} />
+        <Route path="/ShowProduct" element={<ShowProduct />} />
+        <Route path="/ShowProduction" element={<ShowProduction />} />
+        <Route path="/AddProduction" element={<AddProduction />} />
+        <Route path="/AddProduct" element={<AddProduct />} />
 
       </Routes>
     </Router>

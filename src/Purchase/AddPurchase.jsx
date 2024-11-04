@@ -18,13 +18,28 @@ const AddPurchaseForm = () => {
     const [formData, setFormData] = useState({
         paidByEmployeeId: '',
         sellerPartyId: '',
-        compDetails: [{ componentId: '', quantity: 0, price: 0 }],
+        compDetails: [{ componentId: '', quantity: 0, amount: 0 }],
         amountPaid: '',
         taxAmount: '',
         balance: '',
         comment: '',
         date: new Date(),
+        totalAmount: 0,
     });
+
+    // Calculate total amount whenever compDetails changes
+    useEffect(() => {
+        const total = formData.compDetails.reduce(
+            (sum, item) => sum + (item.amount || 0),
+            0
+        );
+        setFormData((prev) => ({
+            ...prev,
+            totalAmount: total,
+            balance: total + parseFloat(formData.taxAmount || 0) - parseFloat(formData.amountPaid || 0),
+        }));
+    }, [formData.compDetails, formData.taxAmount, formData.amountPaid]);
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -60,7 +75,7 @@ const AddPurchaseForm = () => {
 
     const handleCompDetailsChange = (index, field, value) => {
         const updatedCompDetails = [...formData.compDetails];
-        updatedCompDetails[index][field] = value;
+        updatedCompDetails[index][field] = parseFloat(value) || 0;
         setFormData({ ...formData, compDetails: updatedCompDetails });
     };
 
@@ -84,7 +99,7 @@ const AddPurchaseForm = () => {
             compDetails: formData.compDetails.map((item) => ({
                 component: { id: item.componentId },
                 quantity: parseFloat(item.quantity),
-                price: parseFloat(item.price),
+                amount: parseFloat(item.amount),
             })),
             amountPaid: parseFloat(formData.amountPaid),
             taxAmount: parseFloat(formData.taxAmount),
@@ -100,12 +115,12 @@ const AddPurchaseForm = () => {
                 setLoading(false);
                 return;
             }
-            const response = await api.post('http://localhost:8080/api/purchase/add',  purchaseData, {
+            const response = await api.post('http://localhost:8080/api/purchase/add', purchaseData, {
                 headers: {
-                  Authorization: `Bearer ${token}`,
-                  'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                    Accept: 'application/json',
                 },
-              });
+            });
             console.log('Purchase submitted successfully:', response.data);
             alert('Purchase submitted successfully!');
         } catch (error) {
@@ -119,78 +134,55 @@ const AddPurchaseForm = () => {
     return (
         <div>
             <NavbarTechnoFarm />
-            <Container >
+            <Container maxWidth="md">
                 <Typography variant="h4" gutterBottom align="center">Add Purchase Detail</Typography>
                 <form onSubmit={handleSubmit}>
-                    <Paper className='flex gap-4' elevation={2} sx={{ padding: 2, marginBottom: 3 }}>
-                        <div>
-                            <Grid container spacing={1}>
-                                <Grid item xs={12} sm={6}>
-                                    <FormControl fullWidth>
-                                        <Autocomplete
-                                            options={employees}
-                                            getOptionLabel={(option) => option.name}
-                                            onChange={(event, newValue) => {
-                                                setFormData({ ...formData, paidByEmployeeId: newValue ? newValue.id : '' });
-                                            }}
-                                            renderInput={(params) => (
-                                                <TextField
-                                                    {...params}
-                                                    label="Purchase By"
-                                                    variant="outlined"
-                                                    required
-                                                    sx={{ width: '200px' }} // Change this value as needed
-                                                />
-                                            )}
-                                        />
-                                    </FormControl>
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <FormControl fullWidth>
-                                        <Autocomplete
-                                            options={parties}
-                                            getOptionLabel={(option) => option.name}
-                                            onChange={(event, newValue) => {
-                                                setFormData({ ...formData, sellerPartyId: newValue ? newValue.id : '' });
-                                            }}
-                                            renderInput={(params) => (
-                                                <TextField
-                                                    {...params}
-                                                    label="Party"
-                                                    variant="outlined"
-                                                    required
-                                                    sx={{ width: '200px' }} // Change this value as needed
-                                                />
-                                            )}
-                                        />
-                                    </FormControl>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                        <DatePicker
-                                            label="Date"
-                                            value={formData.date}
-                                            onChange={(newDate) => setFormData({ ...formData, date: newDate })}
-                                            renderInput={(params) => (
-                                                <TextField
-                                                    {...params}
-                                                    fullWidth
-                                                    sx={{ width: '200px' }} // Change this value as needed
-                                                />
-                                            )}
-                                        />
-                                    </LocalizationProvider>
-                                </Grid>
+                    <Paper elevation={2} sx={{ padding: 2, marginBottom: 3 }}>
+                        <Grid container spacing={2}>
+                            {/* Form Fields for Employee and Party */}
+                            <Grid item xs={12} sm={6}>
+                                <FormControl fullWidth>
+                                    <Autocomplete
+                                        options={employees}
+                                        getOptionLabel={(option) => option.name}
+                                        onChange={(event, newValue) => {
+                                            setFormData({ ...formData, paidByEmployeeId: newValue ? newValue.id : '' });
+                                        }}
+                                        renderInput={(params) => <TextField {...params} label="Purchase By" variant="outlined" required />}
+                                    />
+                                </FormControl>
                             </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <FormControl fullWidth>
+                                    <Autocomplete
+                                        options={parties}
+                                        getOptionLabel={(option) => option.name}
+                                        onChange={(event, newValue) => {
+                                            setFormData({ ...formData, sellerPartyId: newValue ? newValue.id : '' });
+                                        }}
+                                        renderInput={(params) => <TextField {...params} label="Party" variant="outlined" required />}
+                                    />
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                    <DatePicker
+                                        label="Date"
+                                        value={formData.date}
+                                        onChange={(newDate) => setFormData({ ...formData, date: newDate })}
+                                        renderInput={(params) => <TextField {...params} fullWidth />}
+                                    />
+                                </LocalizationProvider>
+                            </Grid>
+                        </Grid>
 
-                        </div>
                         <div>
                             {formData.compDetails.map((compDetail, index) => (
-                                <Grid container spacing={2} key={index} alignItems="center">
-                                    <Grid item xs={4}>
+                                <Grid className='mt-2' container spacing={2} key={index} alignItems="center">
+                                    <Grid item xs={6}>
                                         <Autocomplete
                                             options={components}
-                                            getOptionLabel={(option) => option.name}
+                                            getOptionLabel={(option) => `${option.name} - ${option.value} ${option.pack === 'OTHER' ? '' : '-' + option.pack} ${option.brand === 'N/A' ? '' : '-' + option.brand} - ${option.catagory}`}
                                             onChange={(event, newValue) => {
                                                 handleCompDetailsChange(index, 'componentId', newValue ? newValue.id : '');
                                             }}
@@ -208,31 +200,28 @@ const AddPurchaseForm = () => {
                                     </Grid>
                                     <Grid item xs={2}>
                                         <TextField
-                                            label="Price"
+                                            label="Amount"
                                             type="number"
-                                            value={compDetail.price}
-                                            onChange={(e) => handleCompDetailsChange(index, 'price', e.target.value)}
+                                            value={compDetail.amount}
+                                            onChange={(e) => handleCompDetailsChange(index, 'amount', e.target.value)}
                                             fullWidth
                                         />
                                     </Grid>
                                     <Grid item xs={2}>
-                                        <Button variant="outlined" color="secondary" onClick={() => removeComponent(index)} startIcon={<DeleteIcon />}>Remove</Button>
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                    <Button className=' ' variant="outlined" color="primary" onClick={addComponent} startIcon={<Add />}>Add </Button>
+                                        <Button style={{ color: "red", backgroundColor: "#F8E7E9" }} onClick={() => removeComponent(index)} startIcon={<DeleteIcon />}>Remove</Button>
                                     </Grid>
                                 </Grid>
                             ))}
                         </div>
-                        
-                    </Paper>
+                        <Button className='mt-3' variant="outlined" color="primary" onClick={addComponent} startIcon={<Add />}>Add Component</Button>
 
+                    </Paper>
 
                     <Paper elevation={2} sx={{ padding: 2, marginTop: 3 }}>
                         <Grid container spacing={2}>
                             <Grid item xs={4}>
                                 <TextField
-                                    label="Total Amount"
+                                    label="Amount Paid"
                                     name="amountPaid"
                                     type="number"
                                     value={formData.amountPaid}
@@ -252,30 +241,31 @@ const AddPurchaseForm = () => {
                             </Grid>
                             <Grid item xs={4}>
                                 <TextField
-                                    label="balance"
-                                    name="balance"
+                                    label="Net Amount"
+                                    name="netAmount"
                                     type="number"
                                     value={formData.balance}
                                     onChange={handleInputChange}
                                     fullWidth
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    label="Comment"
-                                    name="comment"
-                                    value={formData.comment}
-                                    onChange={handleInputChange}
-                                    fullWidth
-                                    multiline
-                                    rows={3}
+                                    disabled
                                 />
                             </Grid>
                         </Grid>
+                        <Grid className='mt-3' item xs={8}>
+                            <TextField
+                                label="Comment"
+                                name="comment"  // Updated name to match formData field
+                                type="text"
+                                value={formData.comment}
+                                onChange={handleInputChange}  // Uses handleInputChange to update formData
+                                fullWidth
+                            />
+                        </Grid>
+
                     </Paper>
 
-                    <Box mt={3}>
-                        <Button variant="contained" color="primary" type="submit" fullWidth>Submit</Button>
+                    <Box mt={2} textAlign="center">
+                        <Button fullWidth variant="contained" color="primary" type="submit">Submit Purchase</Button>
                     </Box>
                 </form>
             </Container>
