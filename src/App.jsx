@@ -30,12 +30,12 @@ import AddCategory from './Component/AddCategory';
 import ShowEmployee from './Employee/ShowEmployee';
 import EmployeeForm from './Employee/AddEmployee';
 import EmployeeDetails from './Employee/EmpoyeeAccountDetails';
-// import NavBar from './NavBr/NavBrCom';
+
 
 function App() {
   return (
     <Router>
-     
+     <NavBarCom/>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/shop" element={<ShopPage />} />

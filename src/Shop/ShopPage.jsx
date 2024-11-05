@@ -5,7 +5,7 @@ import NavBarCom from '../NavBr/NavBrCom'
 function ShopPage() {
   return (
     <div>
-          <NavBarCom />
+          {/* <NavBarCom /> */}
       <ProductList/>
     </div>
   )

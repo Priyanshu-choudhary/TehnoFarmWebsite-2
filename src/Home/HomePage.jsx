@@ -19,7 +19,7 @@ function HomePage() {
 
   return (
     <div>
-       <NavBarCom />
+       {/* <NavBarCom /> */}
       {/* <NavBar /> */}
       <HeroSection />
       {/* <ProductionSection /> */}

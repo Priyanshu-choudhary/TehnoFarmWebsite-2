@@ -37,7 +37,7 @@ const teamMembers = [
 const AboutUs = () => {
   return (
     <div>
-   <NavBarCom />
+   {/* <NavBarCom /> */}
       <div className="about-us">
         <div className="aboutUsInfo ">
           <h1

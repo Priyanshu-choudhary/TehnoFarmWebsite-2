@@ -23,7 +23,7 @@ const ProductDetail = ({ propsId }) => {
 
   return (
     <div>
-       <NavBarCom />
+       {/* <NavBarCom /> */}
    
     <div className="container mt-5">
       <h1 className="text-center font-bold text-4xl mb-5">{product.productTitle}</h1>

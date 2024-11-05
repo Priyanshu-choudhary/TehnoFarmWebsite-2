@@ -7,7 +7,7 @@ import NavBarCom from '../NavBr/NavBrCom';
 const Service = () => {
   return (
     <div>
-         <NavBarCom />
+         {/* <NavBarCom /> */}
       <div className="service-page">
       <div className="service-header">
         <h2
