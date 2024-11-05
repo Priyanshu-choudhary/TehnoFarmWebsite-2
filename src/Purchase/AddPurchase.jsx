@@ -15,6 +15,7 @@ const AddPurchaseForm = () => {
     const [employees, setEmployees] = useState([]);
     const [parties, setParties] = useState([]);
     const [components, setComponents] = useState([]);
+    const [totalam, settotalam] = useState([]);
     const [formData, setFormData] = useState({
         paidByEmployeeId: '',
         sellerPartyId: '',
@@ -38,6 +39,7 @@ const AddPurchaseForm = () => {
             totalAmount: total,
             balance: total + parseFloat(formData.taxAmount || 0) - parseFloat(formData.amountPaid || 0),
         }));
+        settotalam(total);
     }, [formData.compDetails, formData.taxAmount, formData.amountPaid]);
 
 
@@ -164,16 +166,22 @@ const AddPurchaseForm = () => {
                                     />
                                 </FormControl>
                             </Grid>
+
                             <Grid item xs={12}>
-                                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                    <DatePicker
-                                        label="Date"
-                                        value={formData.date}
-                                        onChange={(newDate) => setFormData({ ...formData, date: newDate })}
-                                        renderInput={(params) => <TextField {...params} fullWidth />}
-                                    />
-                                </LocalizationProvider>
+                                <TextField
+                                    label="Date"
+                                    type="date"
+                                    value={formData.date}
+                                    onChange={(event) => setFormData({ ...formData, date: event.target.value })}
+                                    fullWidth
+                                    required
+                                    InputLabelProps={{
+                                        shrink: true, 
+                                    }}
+                                />
                             </Grid>
+
+                          
                         </Grid>
 
                         <div>
@@ -213,8 +221,10 @@ const AddPurchaseForm = () => {
                                 </Grid>
                             ))}
                         </div>
-                        <Button className='mt-3' variant="outlined" color="primary" onClick={addComponent} startIcon={<Add />}>Add Component</Button>
-
+                        <div className='flex justify-between'>
+                            <Button className='mt-3' variant="outlined" color="primary" onClick={addComponent} startIcon={<Add />}>Add Component</Button>
+                            <p className='flex mt-3 mr-44 gap-1'><p className='text-gray-500'>Sub Total: </p> {totalam}</p>
+                        </div>
                     </Paper>
 
                     <Paper elevation={2} sx={{ padding: 2, marginTop: 3 }}>
@@ -241,7 +251,7 @@ const AddPurchaseForm = () => {
                             </Grid>
                             <Grid item xs={4}>
                                 <TextField
-                                    label="Net Amount"
+                                    label="Balance"
                                     name="netAmount"
                                     type="number"
                                     value={formData.balance}
@@ -265,7 +275,7 @@ const AddPurchaseForm = () => {
                     </Paper>
 
                     <Box mt={2} textAlign="center">
-                        <Button fullWidth variant="contained" color="primary" type="submit">Submit Purchase</Button>
+                        <Button fullWidth variant="contained" color="primary" type="submit">Save Purchase</Button>
                     </Box>
                 </form>
             </Container>

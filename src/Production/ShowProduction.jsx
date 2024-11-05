@@ -79,7 +79,7 @@ const ShowProduction = () => {
                     <table className="min-w-full bg-white border border-gray-300">
                         <thead className="bg-gray-300 font-bold">
                             <tr>
-                                {['No.', 'Product Name', 'By Employee', 'Quantity', 'Comment' ,'Actions'].map((header) => (
+                                {['No.', 'Product Name', 'By Employee','Date' ,'Quantity', 'Comment' ,'Actions'].map((header) => (
                                     <th key={header} className="px-6 py-3 text-left text-md text-gray-700">{header}</th>
                                 ))}
                             </tr>
@@ -94,7 +94,8 @@ const ShowProduction = () => {
                                     <td className="px-6 py-4 text-sm text-gray-700">{index + 1}</td>
                                     <td className="px-6 py-4 text-sm text-gray-700">{item.product.name ?? 'Unknown'}</td>
                                     <td className="px-6 py-4 text-sm text-gray-700">{item.employeeDTO?.name ?item.employeeDTO.name: 'Unknown'}</td>
-    
+                                    <td className="px-6 py-4 text-sm text-gray-700">{item.date ?? 'N/A'}</td>
+                                    
                                      <td className="px-6 py-4 text-sm text-gray-700">{item.quantity ?? 'N/A'}</td>
                                      <td className="px-6 py-4 text-sm text-gray-700">{item.comment ?? 'No comments'}</td>
                                    

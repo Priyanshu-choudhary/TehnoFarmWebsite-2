@@ -40,13 +40,13 @@ function NavbarTechnoFarm() {
   };
 
   const customLinks = {
-    SALE: { show: 'http://localhost:5173/showsales', add: 'http://localhost:5173/addSale' },
+    SALE: { show: '/showsales', add: '/addSale' },
     PURCHASE: { show: '/showPurchase', add: '/AddPurchase' },
     PRODUCTION: { show: '/ShowProduction', add: '/AddProduction' },
-    PARTY: { show: 'http://localhost:8080/party/', add: 'http://localhost:8080/party/add' },
+    PARTY: { show: '/ShowPArty', add: '/AddParty' },
     PRODUCT: { show: '/ShowProduct', add: '/AddProduct' },
-    COMPONENT: { show: 'http://localhost:8080/component/', add: 'http://localhost:8080/component/add' },
-    EMPLOYEE: { show: 'http://localhost:8080/employee/', add: 'http://localhost:8080/employee/add' },
+    COMPONENT: { show: '/ShowComponent', add: '/AddComponent' },
+    EMPLOYEE: { show: '/ShowEmployee', add: '/AddEmployee' },
     OTHER: { show: '/ShowDeletedSales', add: 'ShowDeletedPurchases' },
   };
 

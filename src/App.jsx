@@ -21,6 +21,15 @@ import ShowProduct from './Product/ShowProduct';
 import ShowProduction from './Production/ShowProduction';
 import AddProduction from './Production/AddProduction';
 import AddProduct from './Product/AddPRoduct';
+import ShowParty from './Party/ShowParty';
+import PartyForm from './Party/AddParty';
+import PartyDetail from './Party/PartyDetail';
+import ShowComponent from './Component/ShowComponent';
+import ComponentForm from './Component/AddComponent';
+import AddCategory from './Component/AddCategory';
+import ShowEmployee from './Employee/ShowEmployee';
+import EmployeeForm from './Employee/AddEmployee';
+import EmployeeDetails from './Employee/EmpoyeeAccountDetails';
 // import NavBar from './NavBr/NavBrCom';
 
 function App() {
@@ -47,6 +56,16 @@ function App() {
         <Route path="/ShowProduction" element={<ShowProduction />} />
         <Route path="/AddProduction" element={<AddProduction />} />
         <Route path="/AddProduct" element={<AddProduct />} />
+        <Route path="/ShowPArty" element={<ShowParty />} />
+        <Route path="/AddParty" element={<PartyForm />} />
+        <Route path="/AddParty/:id"  element={<PartyForm />} />
+        <Route path="/ShowComponent"  element={<ShowComponent />} />
+        <Route path="/AddComponent/:id"  element={<ComponentForm />} />
+        <Route path="/AddCategory"  element={<AddCategory />} />
+        <Route path="/ShowEmployee"  element={<ShowEmployee />} />
+        <Route path="/AddEmployee/:id"  element={<EmployeeForm />} />
+        <Route path="/AddEmployee"  element={<EmployeeForm />} />
+        <Route path="/EmployeeDetails/:id"  element={<EmployeeDetails />} />
 
       </Routes>
     </Router>
