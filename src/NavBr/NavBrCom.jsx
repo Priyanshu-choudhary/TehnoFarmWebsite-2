@@ -18,12 +18,13 @@ function NavBarCom() {
     PRODUCT: { show: '/ShowProduct', add: '/AddProduct' },
     COMPONENT: { show: '/ShowComponent', add: '/AddComponent' },
     EMPLOYEE: { show: '/ShowEmployee', add: '/AddEmployee' },
-    OTHER: { show: '/ShowDeletedSales', add: '/ShowDeletedPurchases' },
+    // OTHER: { show: '/ShowDeletedSales', add: '/ShowDeletedPurchases' },
+    OTHER: { show: '/Other', add: '/ShowDeletedPurchases' },
   };
 
   return (
-    <nav className="bg-gray-800 text-white p-4">
-      <div className="container mx-auto flex items-center justify-between">
+    <nav className="bg-gray-800 text-white p-4 relative z-20"> {/* Ensure nav is positioned above other content */}
+      <div className="container mx-auto flex items-center justify-between relative z-20">
         <Link className="text-white text-2xl font-bold" to="/">
           TechnoFarm<span>.</span>
         </Link>
@@ -50,23 +51,16 @@ function NavBarCom() {
             Dashboard
           </button>
           {dropdownOpen && (
-            <div className="absolute left-0 top-9 w-48 bg-gray-700 text-white rounded-md shadow-lg">
+            <div className="absolute left-0 top-9 w-48 bg-gray-700 text-white rounded-md shadow-lg z-50"> {/* Higher z-index */}
               {Object.keys(customLinks).map((menu) => (
-                <div key={menu}>
+                <div  onClick={toggleDropdown} key={menu}>
+                  
                   <Link
                     to={customLinks[menu].show}
                     className="block px-4 py-2 text-sm hover:bg-gray-600 flex items-center"
                   >
-                    <RemoveRedEyeOutlinedIcon className="mr-2" />
-                    SHOW {menu}
+                    {menu}
                   </Link>
-                  {/* <Link
-                    to={customLinks[menu].add}
-                    className="block px-4 py-2 text-sm hover:bg-gray-600 flex items-center"
-                  >
-                    <AddCircleOutlineOutlinedIcon className="mr-2" />
-                    ADD NEW {menu}
-                  </Link> */}
                 </div>
               ))}
             </div>

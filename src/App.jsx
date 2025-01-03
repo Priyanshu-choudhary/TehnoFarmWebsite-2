@@ -30,6 +30,7 @@ import AddCategory from './Component/AddCategory';
 import ShowEmployee from './Employee/ShowEmployee';
 import EmployeeForm from './Employee/AddEmployee';
 import EmployeeDetails from './Employee/EmpoyeeAccountDetails';
+import OtherPage from './Others/OtherPage';
 
 
 function App() {
@@ -66,6 +67,7 @@ function App() {
         <Route path="/AddEmployee/:id"  element={<EmployeeForm />} />
         <Route path="/AddEmployee"  element={<EmployeeForm />} />
         <Route path="/EmployeeDetails/:id"  element={<EmployeeDetails />} />
+        <Route path="/Other"  element={<OtherPage />} />
 
       </Routes>
     </Router>

@@ -91,7 +91,12 @@ const ShowParty = () => {
         <div>
             <NavbarTechnoFarm />
             <div className="p-4">
-                <h2 className="text-3xl font-semibold text-gray-800 mb-4">Parties</h2>
+                <div className='flex' style={{ justifyContent: "space-between" }}>
+                    <h2 className="text-3xl font-semibold text-gray-800 mb-4">Parties List</h2>
+                    <button className='bg-blue-400 rounded-md font-bold px-2 h-10 hover:bg-blue-600' onClick={() => { navigate(`/AddParty`) }} >
+                        Add Party +
+                    </button>
+                </div>
                 <TextField
                     label="Search by Name, City, or Business Name"
                     variant="outlined"
