@@ -10,7 +10,7 @@ const Login = () => {
         event.preventDefault(); // Prevent page refresh
 
         try {
-            const response = await axios.post('http://ec2-44-197-16-239.compute-1.amazonaws.com:9090/api/authenticate', {
+            const response = await axios.post('http://test.technofarm.in:9090/api/authenticate', {
                 username,
                 password,
             });

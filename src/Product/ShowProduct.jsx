@@ -37,7 +37,7 @@ const ShowProduct = () => {
 
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`http://localhost:8080/api/products/${id}`, {
+            const response = await fetch(`http://test.technofarm.in:9090/api/products/${id}`, {
                 method: 'DELETE',
                 headers: {
                     Authorization: `Bearer ${token}`,

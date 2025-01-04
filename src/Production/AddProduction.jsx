@@ -31,7 +31,7 @@ const AddProduction = () => {
                 return;
             }
             try {
-                const response = await api.get('http://localhost:8080/api/production/add', {
+                const response = await api.get('http://test.technofarm.in:9090/api/production/add', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                         Accept: 'application/json',
@@ -76,7 +76,7 @@ const AddProduction = () => {
                 setLoading(false);
                 return;
             }
-            const response = await api.post('http://localhost:8080/api/production', jsonData, {
+            const response = await api.post('http://test.technofarm.in:9090/api/production', jsonData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     Accept: 'application/json',

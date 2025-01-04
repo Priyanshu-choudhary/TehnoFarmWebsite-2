@@ -52,7 +52,7 @@ const AddPurchaseForm = () => {
                     setLoading(false);
                     return;
                 }
-                const response = await api.get('http://localhost:8080/api/purchase/add-form-data', {
+                const response = await api.get('http://test.technofarm.in:9090/api/purchase/add-form-data', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                         Accept: 'application/json',
@@ -117,7 +117,7 @@ const AddPurchaseForm = () => {
                 setLoading(false);
                 return;
             }
-            const response = await api.post('http://localhost:8080/api/purchase/add', purchaseData, {
+            const response = await api.post('http://test.technofarm.in:9090/api/purchase/add', purchaseData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     Accept: 'application/json',

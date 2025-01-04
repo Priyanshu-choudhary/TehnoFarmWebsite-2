@@ -82,7 +82,7 @@ export default function SaleDetails() {
         if (!confirmed) return; // If the user cancels, exit the function
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`http://localhost:8080/api/sales/${id}`, {
+            const response = await fetch(`http://test.technofarm.in:9090/api/sales/${id}`, {
                 method: 'DELETE',
                 headers: {
                     Authorization: `Bearer ${token}`,
