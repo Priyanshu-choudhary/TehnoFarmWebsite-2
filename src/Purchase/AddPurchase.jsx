@@ -94,7 +94,11 @@ const AddPurchaseForm = () => {
     };
 
     const handleSubmit = async (e) => {
+ 
         e.preventDefault();
+
+        const dateObject = new Date(formData.date);
+
         const purchaseData = {
             paidByEmployee: { id: formData.paidByEmployeeId },
             sellerParty: { id: formData.sellerPartyId },
@@ -106,7 +110,7 @@ const AddPurchaseForm = () => {
             amountPaid: parseFloat(formData.amountPaid),
             taxAmount: parseFloat(formData.taxAmount),
             balance: parseFloat(formData.balance),
-            date: formData.date.toISOString().split('T')[0],
+            date: dateObject.toISOString().split('T')[0],
             comment: formData.comment,
         };
 

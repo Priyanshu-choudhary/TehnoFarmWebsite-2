@@ -4,6 +4,7 @@ import axios from 'axios';
 import api from '/src/API';
 import DeleteIcon from '@mui/icons-material/Delete';
 import NavbarTechnoFarm from '../../NavBr/NavBarTechnoFarmOriginal';
+import AllSales from './showAllSales';
 export default function SaleDetails() {
     const { id } = useParams();
     const [sale, setSale] = useState(null);
@@ -333,6 +334,7 @@ export default function SaleDetails() {
                 )}
 
         </div>
+      
         </div>
     );
 }

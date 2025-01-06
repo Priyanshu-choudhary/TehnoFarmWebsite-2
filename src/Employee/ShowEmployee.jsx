@@ -147,7 +147,7 @@ const ShowEmployee = () => {
                                                 },
                                             }}
                                         >
-                                            Details
+                                            Account
                                         </Button>
                                     </td>
                                 </tr>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './Home/HomePage';
 
@@ -31,12 +31,22 @@ import ShowEmployee from './Employee/ShowEmployee';
 import EmployeeForm from './Employee/AddEmployee';
 import EmployeeDetails from './Employee/EmpoyeeAccountDetails';
 import OtherPage from './Others/OtherPage';
+import NavbarTechnoFarm from './NavBr/NavBarTechnoFarmOriginal';
+import NavAfterLogin from './NavBr/NavAfterLogin';
+import EditProduct from './Product/Editproduct';
+import AllSales from './Dashboard/Sales/showAllSales';
 
 
 function App() {
+  const [tocken, setTocken] = useState(localStorage.getItem('token'))
+  useEffect(() => {
+   setTocken(localStorage.getItem('token'));
+  }, [])
+  
   return (
     <Router>
-     <NavBarCom/>
+     {tocken?<NavAfterLogin/>:<NavBarCom/>}
+     {/* <NavBarCom/> */}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/shop" element={<ShopPage />} />
@@ -45,7 +55,8 @@ function App() {
         <Route path="/AboutUs" element={<AboutUs />} />
         <Route path="/Services" element={<Service />} />
         
-        <Route path="/ShowSales" element={<ShowSales />} />
+        <Route path="/ShowSales" element={<AllSales/>} />
+        <Route path="/ShowPartySales" element={<ShowSales/>} />
         <Route path="/login" element={<Login />} />
         <Route path="/sale/party/:id" element={<SaleDetails />} />
         <Route path="/addSale" element={<AddSaleForm />} />
@@ -54,6 +65,7 @@ function App() {
         <Route path="/AddPurchase" element={<AddPurchaseForm />} />
         <Route path="/ShowDeletedPurchases" element={<ShowDeletedPurchases />} />
         <Route path="/ShowProduct" element={<ShowProduct />} />
+        <Route path="/EditProduct/:id" element={<EditProduct />} />
         <Route path="/ShowProduction" element={<ShowProduction />} />
         <Route path="/AddProduction" element={<AddProduction />} />
         <Route path="/AddProduct" element={<AddProduct />} />

@@ -4,9 +4,11 @@ import api from '/src/API';
 import { useNavigate } from 'react-router-dom';
 import NavbarTechnoFarm from '../NavBr/NavBarTechnoFarmOriginal';
 import { TextField } from '@mui/material';
+import AftersubmitPartyCheck from './afterPartyAdded';
 
 const ShowParty = () => {
     const [party, setParty] = useState([]);
+    
     const [filteredParty, setFilteredParty] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -114,6 +116,7 @@ const ShowParty = () => {
                                 <th className="px-6 py-3 text-left text-md text-gray-700">Business Name</th>
                                 <th className="px-6 py-3 text-left text-md text-gray-700">City</th>
                                 <th className="px-6 py-3 text-left text-md text-gray-700">Balance</th>
+                                <th className="px-6 py-3 text-left text-md text-gray-700">Party Sales</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -128,6 +131,17 @@ const ShowParty = () => {
                                     <td className="px-6 py-4 text-sm text-gray-700">{sale.businessName}</td>
                                     <td className="px-6 py-4 text-sm text-gray-700">{sale.city}</td>
                                     <td className="px-6 py-4 text-sm text-gray-700">{sale.balance}</td>
+                                    <td className="px-6 py-4 text-sm text-gray-700">
+                                    <button
+                                    className='bg-blue-400 rounded-md font-bold px-2 py-2 hover:text-white'
+                                     onClick={(event) => {
+                                                event.stopPropagation(); // Prevents the row click from firing
+                                                navigate(`/sale/party/${sale.id}`);
+             
+                                            }}>
+                                             Show
+                                            </button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
@@ -186,6 +200,7 @@ const ShowParty = () => {
                         </div>
                     </div>
                 )}
+             
             </div>
         </div>
     );

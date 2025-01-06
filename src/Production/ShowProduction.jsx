@@ -3,6 +3,7 @@ import api from '/src/API';
 import { useNavigate } from 'react-router-dom';
 import NavbarTechnoFarm from '../NavBr/NavBarTechnoFarmOriginal';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AftersubmitProductionCheck from './AfterProductAdd';
 
 const ShowProduction = () => {
     const [production, setproduction] = useState([]);
@@ -69,9 +70,9 @@ const ShowProduction = () => {
                     <h2 className="text-3xl font-semibold text-gray-800">Production Product</h2>
                     <button
                         className='bg-blue-400 rounded-md font-bold px-2 h-10 hover:bg-blue-600'
-                        onClick={() => navigate(`/Addproduct`)}
+                        onClick={() => navigate(`/AddProduction`)}
                     >
-                        Add Product +
+                        Add Production +
                     </button>
                 </div>
 
@@ -113,6 +114,7 @@ const ShowProduction = () => {
                     </table>
                 </div>
             </div>
+            {/* */}
         </div>
     );
 };

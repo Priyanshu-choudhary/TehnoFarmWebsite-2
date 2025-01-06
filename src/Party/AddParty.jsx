@@ -3,12 +3,14 @@ import { TextField, Button, MenuItem, Container, Typography, Grid, Paper } from 
 import api from '/src/API';
 import NavbarTechnoFarm from '../NavBr/NavBarTechnoFarmOriginal';
 import { useParams } from 'react-router-dom';
+import AftersubmitPartyCheck from './afterPartyAdded';
 
 const PartyForm = () => {
     const { id } = useParams(); // Extract the id from the URL
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const partyTypes = ['SELLER', 'PURCHASE', 'HYBRID'];
+    const [partyID, setpartyId] = useState(null)
     const [formData, setFormData] = useState({
         name: '',
         type: '',
@@ -84,7 +86,9 @@ const PartyForm = () => {
                         Accept: 'application/json',
                     },
                 });
+
                 console.log('Party created successfully:', response.data);
+                setpartyId(response.data.id);
                 alert('Party created successfully!');
             }
         } catch (error) {
@@ -99,6 +103,7 @@ const PartyForm = () => {
 
     return (
         <div>
+            {partyID && <AftersubmitPartyCheck partyId={partyID} />}
             <NavbarTechnoFarm />
             <Container sx={{ mt: 4 }}>
                 <Paper elevation={3} sx={{ p: 3 }}>
@@ -247,6 +252,7 @@ const PartyForm = () => {
                     </form>
                 </Paper>
             </Container>
+            
         </div>
     );
 };

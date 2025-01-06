@@ -11,11 +11,16 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import NavbarTechnoFarm from '../../NavBr/NavBarTechnoFarmOriginal';
+import { useParams, useNavigate } from 'react-router-dom';
+import AftersubmitSaleCheck from './AftersubmitSaleCheck';
 
 const AddSaleForm = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [employees, setEmployees] = useState([]);
   const [parties, setParties] = useState([]);
+  const [selectedParty, setSelectedParty] = useState('');
+  const [saleId, setsaleId] = useState(null);
   const [products, setProducts] = useState([]);
   const [formData, setFormData] = useState({
     employeeId: '',
@@ -58,7 +63,7 @@ const AddSaleForm = () => {
         });
 
         setEmployees(response.data.employees || []);
-        setParties(response.data.parties || []);
+        // setParties(response.data.parties || []);
         setProducts(response.data.products || []);
       } catch (error) {
         console.error('Error fetching sales data:', error);
@@ -69,6 +74,36 @@ const AddSaleForm = () => {
 
     fetchSales();
   }, []);
+
+  useEffect(() => {
+    const fetchParties = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          console.error('No token found in localStorage');
+          setLoading(false);
+          return;
+        }
+
+        const response = await api.get('/api/party', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/json',
+          },
+        });
+
+
+        setParties(response.data || []);
+      } catch (error) {
+        console.error('Error fetching party data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchParties();
+  }, []);
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -123,8 +158,10 @@ const AddSaleForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const dateObject = new Date(formData.date);
 
     const saleData = {
+
       salesParty: { id: formData.partyId, name: parties.find(p => p.id === formData.partyId)?.name || '' },
       productDetails: formData.productDetails,
       replacement: formData.replacement,
@@ -134,7 +171,7 @@ const AddSaleForm = () => {
       balance: parseFloat(formData.balance),
       comment: formData.comment,
       saleByEmployee: { id: formData.employeeId, name: employees.find(emp => emp.id === formData.employeeId)?.name || '' },
-      date: formData.date.toISOString().split('T')[0],
+      date: dateObject.toISOString().split('T')[0],
       dateFormat: formData.dateFormat,
     };
 
@@ -153,12 +190,14 @@ const AddSaleForm = () => {
       });
 
       console.log('Sale submitted successfully:', response.data);
+      setsaleId(response.data.id);
       alert('Sale submitted successfully!');
+      // navigate('/Showsales');
     } catch (error) {
       console.error('Error submitting sale:', error);
       alert('Failed to submit sale. Please try again.');
     }
-    console.log(saleData);
+    // console.log(saleData);
   };
 
   if (loading) {
@@ -167,187 +206,191 @@ const AddSaleForm = () => {
 
 
 
+
   return (
-   <div>
-     <NavbarTechnoFarm/>
-     <Container maxWidth="md">
-       
-      <Typography variant="h4" gutterBottom align="center">
-        Add New Sale
-      </Typography>
-      <form onSubmit={handleSubmit}>
-        {/* Employee and Party Selection */}
-        <Paper elevation={2} sx={{ padding: 2, marginBottom: 3 }}>
-          <Typography variant="h6" gutterBottom>
-            Sale Details
-          </Typography>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
+    <div>
+      <NavbarTechnoFarm />
+      <Container maxWidth="md">
 
-                <Autocomplete
-                  options={employees}
-                  getOptionLabel={(option) => option.name}
-                  onChange={(event, newValue) => {
-                    handleInputChange({ target: { name: 'employeeId', value: newValue ? newValue.id : '' } });
+        <Typography variant="h4" gutterBottom align="center">
+          Add New Sale
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          {/* Employee and Party Selection */}
+          <Paper elevation={2} sx={{ padding: 2, marginBottom: 3 }}>
+            <Typography variant="h6" gutterBottom>
+              Sale Details
+            </Typography>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+
+                  <Autocomplete
+                    options={employees}
+                    getOptionLabel={(option) => option.name}
+                    onChange={(event, newValue) => {
+                      handleInputChange({ target: { name: 'employeeId', value: newValue ? newValue.id : '' } });
+                    }}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Employee" variant="outlined" required />
+                    )}
+                    value={employees.find(emp => emp.id === formData.employeeId) || null}
+                    isOptionEqualToValue={(option, value) => option.id === value.id}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+
+                  <Autocomplete
+                    options={parties}
+
+                    getOptionLabel={(option) => option.name}
+                    onChange={(event, newValue) => {
+                      handleInputChange({ target: { name: 'partyId', value: newValue ? newValue.id : '' } });
+                    }}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Party" variant="outlined" required />
+                    )}
+                    value={parties.find(party => party.id === formData.partyId) || null}
+                    isOptionEqualToValue={(option, value) => option.id === value.id}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  label="Date"
+                  type="date"
+                  value={formData.date}
+                  onChange={(event) => setFormData({ ...formData, date: event.target.value })}
+                  fullWidth
+                  required
+                  InputLabelProps={{
+                    shrink: true,
                   }}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Employee" variant="outlined" required />
-                  )}
-                  value={employees.find(emp => emp.id === formData.employeeId) || null}
-                  isOptionEqualToValue={(option, value) => option.id === value.id}
                 />
-              </FormControl>
+              </Grid>
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
+          </Paper>
 
-                <Autocomplete
-                  options={parties}
-                  getOptionLabel={(option) => option.name}
-                  onChange={(event, newValue) => {
-                    handleInputChange({ target: { name: 'partyId', value: newValue ? newValue.id : '' } });
-                  }}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Party" variant="outlined" required />
-                  )}
-                  value={parties.find(party => party.id === formData.partyId) || null}
-                  isOptionEqualToValue={(option, value) => option.id === value.id}
+          {/* Product and Replacement Sections */}
+          <ProductSection
+            title="Products"
+            items={formData.productDetails}
+            onAdd={() => addProduct('productDetails')}
+            onRemove={(index) => removeProduct(index, 'productDetails')}
+            onChange={(index, field, value) => handleProductChange(index, field, value, 'productDetails')}
+            products={products}
+          />
+
+          <ProductSection
+            title="Replacement Products"
+            items={formData.replacement}
+            onAdd={() => addProduct('replacement')}
+            onRemove={(index) => removeProduct(index, 'replacement')}
+            onChange={(index, field, value) => handleProductChange(index, field, value, 'replacement')}
+            products={products}
+          />
+
+          {/* Payment Details Section */}
+          <Paper elevation={2} sx={{ padding: 2, marginTop: 3 }}>
+            <Typography variant="h6" gutterBottom>
+              Payment Details
+            </Typography>
+            <Grid container spacing={2}>
+              <Grid item xs={6} sm={4}>
+                <TextField
+                  label="Amount Paid"
+                  name="amountPaid"
+                  type="number"
+                  value={formData.amountPaid}
+                  onChange={handleInputChange}
+                  fullWidth
                 />
-              </FormControl>
-            </Grid>
-          </Grid>
-        </Paper>
+              </Grid>
+              <Grid item xs={6} sm={4}>
+                <TextField
+                  label="Tax Amount"
+                  name="taxAmount"
+                  type="number"
+                  value={formData.taxAmount}
+                  onChange={handleInputChange}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6} sm={4}>
+                <TextField
+                  label="Discount"
+                  name="discount"
+                  type="number"
+                  value={formData.discount}
+                  onChange={handleInputChange}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  label="Balance"
+                  name="balance"
+                  value={formData.balance}
+                  fullWidth
+                  disabled
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  label="Comment"
+                  name="comment"
+                  value={formData.comment}
+                  onChange={handleInputChange}
+                  fullWidth
+                  multiline
+                  rows={3}
+                />
+              </Grid>
 
-        {/* Product and Replacement Sections */}
-        <ProductSection
-          title="Products"
-          items={formData.productDetails}
-          onAdd={() => addProduct('productDetails')}
-          onRemove={(index) => removeProduct(index, 'productDetails')}
-          onChange={(index, field, value) => handleProductChange(index, field, value, 'productDetails')}
-          products={products}
-        />
+              <div className='m-4 mt-5'>
+                <Typography variant="h6" gutterBottom>
+                  Review Totals
+                  <hr />
+                </Typography>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={6}>
+                    <Typography className='flex gap-3'>Total Product Amount: <p className='text-green-500 '>+{totals.totalProductAmount}</p></Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
 
-        <ProductSection
-          title="Replacement Products"
-          items={formData.replacement}
-          onAdd={() => addProduct('replacement')}
-          onRemove={(index) => removeProduct(index, 'replacement')}
-          onChange={(index, field, value) => handleProductChange(index, field, value, 'replacement')}
-          products={products}
-        />
+                    <Typography className='flex gap-3'>Total Replacement Amount <p className='text-red-500 '>-{totals.totalReplacementAmount}</p></Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Typography>Tax Amount: + {totals.taxAmount}</Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Typography>Discount: -{totals.discount}</Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Typography>Amount Paid: {totals.amountPaid}</Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Typography>Balance: {totals.balance}</Typography>
+                  </Grid>
+                </Grid>
+              </div>
+            </Grid>
+          </Paper>
 
-        {/* Payment Details Section */}
-        <Paper elevation={2} sx={{ padding: 2, marginTop: 3 }}>
-          <Typography variant="h6" gutterBottom>
-            Payment Details
-          </Typography>
-          <Grid container spacing={2}>
-            <Grid item xs={6} sm={4}>
-              <TextField
-                label="Amount Paid"
-                name="amountPaid"
-                type="number"
-                value={formData.amountPaid}
-                onChange={handleInputChange}
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={6} sm={4}>
-              <TextField
-                label="Tax Amount"
-                name="taxAmount"
-                type="number"
-                value={formData.taxAmount}
-                onChange={handleInputChange}
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={6} sm={4}>
-              <TextField
-                label="Discount"
-                name="discount"
-                type="number"
-                value={formData.discount}
-                onChange={handleInputChange}
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                label="Balance"
-                name="balance"
-                value={formData.balance}
-                fullWidth
-                disabled
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                label="Comment"
-                name="comment"
-                value={formData.comment}
-                onChange={handleInputChange}
-                fullWidth
-                multiline
-                rows={3}
-              />
-            </Grid>
-              
-          <div className='m-4 mt-5'>
-          <Typography variant="h6" gutterBottom>
-            Review Totals
-            <hr />
-          </Typography>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <Typography className='flex gap-3'>Total Product Amount: <p className='text-green-500 '>+{totals.totalProductAmount}</p></Typography>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-             
-              <Typography className='flex gap-3'>Total Replacement Amount <p className='text-red-500 '>-{totals.totalReplacementAmount}</p></Typography>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Typography>Tax Amount: + {totals.taxAmount}</Typography>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Typography>Discount: -{totals.discount}</Typography>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Typography>Amount Paid: {totals.amountPaid}</Typography>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Typography>Balance: {totals.balance}</Typography>
-            </Grid>
-          </Grid>
-          </div>
-    
-          </Grid>
-        </Paper>
 
-        {/* Date Selection */}
-        {/* <Paper elevation={2} sx={{ padding: 2, marginTop: 3 }}>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <DatePicker
-          label="Date"
-          value={formData.date}
-          onChange={(newDate) => setFormData({ ...formData, date: newDate })}
-          renderInput={(params) => <TextField {...params} fullWidth />}
-        />
-      </LocalizationProvider>
-    </Paper> */}
-     
 
-        {/* Submit Button */}
-        <Box mt={3}>
-          <Button variant="contained" color="primary" type="submit" fullWidth>
-            Submit
-          </Button>
-        </Box>
-      </form>
-    </Container>
-   </div>
+          {/* Submit Button */}
+          <Box mt={3}>
+            <Button variant="contained" color="primary" type="submit" fullWidth>
+              Submit
+            </Button>
+          </Box>
+        </form>
+      </Container>
+      {saleId && <AftersubmitSaleCheck saleId={saleId}/>}
+    </div>
   );
 };
 

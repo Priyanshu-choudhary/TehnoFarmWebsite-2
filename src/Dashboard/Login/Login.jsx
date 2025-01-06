@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import * as jwtDecode from 'jwt-decode';
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -15,11 +16,20 @@ const Login = () => {
                 password,
             });
 
+            const token = response.data.value;
             // Save the token to local storage (or cookie) for future requests
-            localStorage.setItem('token', response.data.value);
+            localStorage.setItem('token', token);
 
-            // Redirect to the sales page or another component
-            window.location.href = '/showsales';
+            // Decode the token and extract the 'sub' data
+            // const decodedToken = jwtDecode(token);
+            // const sub = decodedToken;
+            // console.log(sub);
+            
+            // // Save the 'sub' data in local storage
+            localStorage.setItem('username', username);
+
+            // // Redirect to the sales page or another component
+            window.location.href = '/';
         } catch (err) {
             setError('Invalid username or password');
         }

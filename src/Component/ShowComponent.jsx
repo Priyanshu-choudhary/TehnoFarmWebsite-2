@@ -118,6 +118,9 @@ const ShowComponent = () => {
                     <button className='bg-blue-400 rounded-md font-bold px-2 h-10 hover:bg-blue-600' onClick={() => { navigate(`/AddCategory`) }} >
                         Add Category +
                     </button>
+                    <button className='bg-blue-400 rounded-md font-bold px-2 h-10 hover:bg-blue-600' onClick={() => { navigate(`/AddComponent/:id`) }} >
+                        Add Component +
+                    </button>
 
                 </div>   
                 {/* Autocomplete field for category selection */}

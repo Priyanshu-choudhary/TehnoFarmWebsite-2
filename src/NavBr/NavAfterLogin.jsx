@@ -1,14 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 
-function NavBarCom() {
+function NavAfterLogin() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
+  const [username, setusername] = useState(localStorage.getItem('username'));
+  useEffect(() => {
+    setusername(localStorage.getItem('username'));
+  }, [])
+  
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
+
+    const [tocken, setTocken] = useState(localStorage.getItem('token'))
+    useEffect(() => {
+     setTocken(localStorage.getItem('token'));
+    }, [])
 
   const customLinks = {
     SALE: { show: '/showsales', add: '/addSale' },
@@ -36,10 +45,15 @@ function NavBarCom() {
 
         {/* Main Navigation Links */}
         <div className="hidden md:flex md:items-center md:space-x-4">
-          <Link className="hover:text-gray-400" to="/">Home</Link>
-          <Link className="hover:text-gray-400" to="/shop">Products</Link>
-          <Link className="hover:text-gray-400" to="/AboutUs">About us</Link>
-          <Link className="hover:text-gray-400" to="/Services">Services</Link>
+          <Link className="hover:text-gray-400" to="/showsales">Sale</Link>
+          <Link className="hover:text-gray-400" to="/showPurchase">Purchase</Link>
+          <Link className="hover:text-gray-400" to="/ShowProduction">Production</Link>
+          <Link className="hover:text-gray-400" to="/ShowParty">Party</Link>
+
+          <Link className="hover:text-gray-400" to="/ShowProduct">Product</Link>
+          <Link className="hover:text-gray-400" to="/ShowComponent">Component</Link>
+          <Link className="hover:text-gray-400" to="/ShowEmployee">Employee</Link>
+          <Link className="hover:text-gray-400" to="/Other">Other</Link>
         </div>
 
         {/* Dropdown Menu for Dashboard */}
@@ -49,7 +63,7 @@ function NavBarCom() {
         <div className="hidden md:flex md:space-x-4 ">
           <Link className="hover:text-gray-400 flex gap-2" to="/login">
             <img src="/user.svg" alt="User" />
-            <p>Login</p>
+           {tocken?<p>{username}</p>: <p>Login</p>}
           </Link>
         </div>
       </div>
@@ -57,5 +71,5 @@ function NavBarCom() {
   );
 }
 
-export default NavBarCom;
+export default NavAfterLogin;
 

@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import api from '/src/API'; // Adjust the path to your API instance
 import NavbarTechnoFarm from '../NavBr/NavBarTechnoFarmOriginal';
+import AftersubmitProductionCheck from './AfterProductAdd';
 
 const AddProduction = () => {
     const [loading, setLoading] = useState(true);
@@ -21,8 +22,11 @@ const AddProduction = () => {
     const [date, setDate] = useState(new Date());
     const [comment, setComment] = useState('');
     const [employee, setEmployee] = useState(''); // New state for selected employee
-
-    useEffect(() => {
+    const [employeeName, setEmployeeName] = useState(''); // New state for selected employee
+    
+    const [isDone, setisDone] = useState(null);
+    const [selectedProduction, setcheckResponse] = useState(null);
+        useEffect(() => {
         const fetchProducts = async () => {
             const token = localStorage.getItem('token');
             if (!token) {
@@ -39,8 +43,10 @@ const AddProduction = () => {
                 }); // Adjust API endpoint
                 setProducts(response.data || []);
                 
+                
                 // Assuming the API response includes an employeeNames array
                 setEmployeeNames(response.data.employeeNames || []);
+            
             } catch (error) {
                 console.error('Error fetching products:', error);
             } finally {
@@ -67,6 +73,15 @@ const AddProduction = () => {
             comment: comment,
             employee: {id: employee}, // Include selected employee in JSON data
         };
+        const confirmData = {
+            product: {
+                name: selectedProduct.name,
+            },
+            quantity: quantity,
+            date: date.toISOString().split('T')[0], // Format the date as YYYY-MM-DD
+            comment: comment,
+            employee: {name: employeeName}, // Include selected employee in JSON data
+        };
 
 
         try {
@@ -83,7 +98,10 @@ const AddProduction = () => {
                 },
             });
             console.log('Product added successfully:', response.data);
+            setcheckResponse( confirmData);
+            console.log(confirmData);
             alert('Product added successfully!');
+            setisDone(true);
         } catch (error) {
             console.error('Error adding product:', error);
             alert('Failed to add product. Please try again.');
@@ -116,6 +134,7 @@ const AddProduction = () => {
                                     getOptionLabel={(option) => `${option.name}`}
                                     onChange={(event, newValue) => {
                                         setEmployee(newValue.id);
+                                        setEmployeeName(newValue.name);
                                     }}
                                     renderInput={(params) => <TextField {...params} label="Select Employee" required />}
                                 />
@@ -158,6 +177,7 @@ const AddProduction = () => {
                     </Paper>
                 </form>
             </Container>
+            {isDone&&<AftersubmitProductionCheck selectedProduction={selectedProduction}/>}
         </div>
     );
 };
