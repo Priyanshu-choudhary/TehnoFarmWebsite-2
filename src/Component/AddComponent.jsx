@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TextField, Button, MenuItem, Container, Typography, Grid, Paper } from '@mui/material';
 import api from '/src/API';
-import NavbarTechnoFarm from '../NavBr/NavBarTechnoFarmOriginal';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const ComponentForm = () => {
@@ -121,7 +120,7 @@ const ComponentForm = () => {
 
     return (
         <div>
-            <NavbarTechnoFarm />
+          
             <Container sx={{ mt: 4 }}>
                 <Paper elevation={3} sx={{ p: 3 }}>
                     <Typography variant="h4" align="center" gutterBottom>
@@ -206,7 +205,7 @@ const ComponentForm = () => {
                             </Grid>
                             <Grid item xs={12}>
                                 <Button type="submit" variant="contained" color="primary" fullWidth>
-                                    {id ? 'Update' : 'Submit'}
+                                    {id ? 'Save' : 'Submit'}
                                 </Button>
                             </Grid>
                         </Grid>

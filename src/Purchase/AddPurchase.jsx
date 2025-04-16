@@ -8,7 +8,7 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import api from '/src/API';
-import NavbarTechnoFarm from '../NavBr/NavBarTechnoFarmOriginal';
+import AftersubmitPurachaseCheck from './AfterPurchase';
 
 const AddPurchaseForm = () => {
     const [loading, setLoading] = useState(true);
@@ -16,6 +16,8 @@ const AddPurchaseForm = () => {
     const [parties, setParties] = useState([]);
     const [components, setComponents] = useState([]);
     const [totalam, settotalam] = useState([]);
+    const [isDone, setisDone] = useState(false);
+    const [ApiReturnData, setApiReturnData] = useState(null);
     const [formData, setFormData] = useState({
         paidByEmployeeId: '',
         sellerPartyId: '',
@@ -52,7 +54,7 @@ const AddPurchaseForm = () => {
                     setLoading(false);
                     return;
                 }
-                const response = await api.get('http://test.technofarm.in:9090/api/purchase/add-form-data', {
+                const response = await api.get('https://technofarm.in/api/purchase/add-form-data', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                         Accept: 'application/json',
@@ -121,13 +123,15 @@ const AddPurchaseForm = () => {
                 setLoading(false);
                 return;
             }
-            const response = await api.post('http://test.technofarm.in:9090/api/purchase/add', purchaseData, {
+            const response = await api.post('https://technofarm.in/api/purchase/add', purchaseData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     Accept: 'application/json',
                 },
             });
             console.log('Purchase submitted successfully:', response.data);
+            setisDone(true);
+            setApiReturnData(response.data);
             alert('Purchase submitted successfully!');
         } catch (error) {
             console.error('Error submitting purchase:', error);
@@ -139,7 +143,8 @@ const AddPurchaseForm = () => {
 
     return (
         <div>
-            <NavbarTechnoFarm />
+     
+            { isDone && ApiReturnData &&  <AftersubmitPurachaseCheck purchaseid={ApiReturnData.id} />}
             <Container maxWidth="md">
                 <Typography variant="h4" gutterBottom align="center">Add Purchase Detail</Typography>
                 <form onSubmit={handleSubmit}>
@@ -162,7 +167,7 @@ const AddPurchaseForm = () => {
                                 <FormControl fullWidth>
                                     <Autocomplete
                                         options={parties}
-                                        getOptionLabel={(option) => option.name}
+                                        getOptionLabel={(option) =>`${option.name} - ${option.city}` }
                                         onChange={(event, newValue) => {
                                             setFormData({ ...formData, sellerPartyId: newValue ? newValue.id : '' });
                                         }}

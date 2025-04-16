@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import api from '/src/API';
 import { useNavigate } from 'react-router-dom';
-import NavbarTechnoFarm from '../NavBr/NavBarTechnoFarmOriginal';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Unauthorized from '/src/NotAuthorided';
+import AftersubmitPurachaseCheck from './AfterPurchase';
+
 
 const ShowPurchase = () => {
     const [purchase, setPurchase] = useState([]);
@@ -12,6 +14,11 @@ const ShowPurchase = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+    const [role, setrole] = useState(JSON.parse(localStorage.getItem('user')).role);
+  
+useEffect(() => {
+    setrole( JSON.parse(localStorage.getItem('user')).role);
+}, [])
 
     useEffect(() => {
         const fetchPurchase = async () => {
@@ -20,7 +27,7 @@ const ShowPurchase = () => {
                 const response = await api.get('/api/purchase', {
                     headers: { Authorization: `Bearer ${token}` },
                 });
-                setPurchase(response.data);
+                setPurchase(response.data.content);
             } catch (error) {
                 setError('Failed to fetch purchase data.');
             } finally {
@@ -36,7 +43,7 @@ const ShowPurchase = () => {
 
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`http://test.technofarm.in:9090/api/purchase/${id}`, {
+            const response = await fetch(`https://technofarm.in/api/purchase/${id}`, {
                 method: 'DELETE',
                 headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' },
             });
@@ -64,9 +71,13 @@ const ShowPurchase = () => {
     if (loading) return <div>Loading purchase data...</div>;
     if (error) return <div>{error}</div>;
 
+    if (role!="DIRECTOR") {
+        return <Unauthorized/>;
+    }
     return (
         <div>
-            <NavbarTechnoFarm />
+          
+      
             <div className="p-4">
                 <div className='flex' style={{ justifyContent: "space-between" }}>
                     <h2 className="text-3xl font-semibold text-gray-800 mb-4">Purchase Entries</h2>

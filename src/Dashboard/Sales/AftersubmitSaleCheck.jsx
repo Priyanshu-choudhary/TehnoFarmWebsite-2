@@ -75,7 +75,7 @@ function AftersubmitSaleCheck({ saleId }) {
                         maxWidth: "38rem",
                         width: "100%"
                     }}>
-                       backgroundColor: "#E4F6E4",
+                        <h3 style={{ fontWeight: "bold", color: "green" }}>Sale Added:</h3>
                         <div>
                             <table className="min-w-full bg-white border border-gray-300">
                                 <tbody>
@@ -115,7 +115,7 @@ function AftersubmitSaleCheck({ saleId }) {
                             </table>
 
 
-                            {/* <h3 style={{ marginTop: "1rem", fontWeight: "bold", color: "green" }}>Product Details:</h3> */}
+                          
                             <div className='mt-5'>
                                 <table style={{ width: "100%", borderCollapse: "collapse", marginTop: "0.5rem" }}>
                                     <thead>

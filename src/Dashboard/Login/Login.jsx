@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import * as jwtDecode from 'jwt-decode';
-
+import api from '/src/API'; // Make sure you have a suitable API utility
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -11,30 +11,37 @@ const Login = () => {
         event.preventDefault(); // Prevent page refresh
 
         try {
-            const response = await axios.post('http://test.technofarm.in:9090/api/authenticate', {
+            const response = await axios.post('https://technofarm.in/api/authenticate', {
                 username,
                 password,
             });
 
             const token = response.data.value;
             // Save the token to local storage (or cookie) for future requests
+
             localStorage.setItem('token', token);
-
-            // Decode the token and extract the 'sub' data
-            // const decodedToken = jwtDecode(token);
-            // const sub = decodedToken;
-            // console.log(sub);
-            
-            // // Save the 'sub' data in local storage
-            localStorage.setItem('username', username);
-
-            // // Redirect to the sales page or another component
-            window.location.href = '/';
+            handleUserdata(username);
+         
         } catch (err) {
             setError('Invalid username or password');
         }
     };
 
+    const handleUserdata = async (employeeUserName) => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await api.get(`/api/employee/username/${employeeUserName}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: 'application/json',
+                },
+            });
+            localStorage.setItem('user', JSON.stringify(response.data));
+            window.location.href = '/';
+        } catch (error) {
+            console.error('Error fetching employee detail:', error);
+        }
+    };
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <div className="bg-white p-8 rounded shadow-md w-96">

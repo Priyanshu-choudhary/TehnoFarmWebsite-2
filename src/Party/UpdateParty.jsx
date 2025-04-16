@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { TextField, Button, MenuItem, Container, Typography, Grid, Paper } from '@mui/material';
-import api from '/src/API';
 import { useParams } from 'react-router-dom';
+import api from '/src/API';
 import AftersubmitPartyCheck from './afterPartyAdded';
 
-const PartyForm = () => {
-    const { id } = useParams(); // Extract the id from the URL
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const partyTypes = ['SELLER', 'PURCHASE', 'HYBRID'];
-    const [partyID, setpartyId] = useState(null)
+const UpdateParty = () => {
+    const { id } = useParams();
     const [formData, setFormData] = useState({
         name: '',
         type: '',
@@ -24,90 +20,69 @@ const PartyForm = () => {
         salesRating: '',
         comment: ''
     });
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [isUpdated, setIsUpdated] = useState(false);
+    const partyTypes = ['SELLER', 'PURCHASE', 'HYBRID'];
 
     useEffect(() => {
-        const fetchPartyDetail = async () => {
-            if (id) { // Fetch only if id is present
-                try {
-                    const token = localStorage.getItem('token'); // Retrieve token from local storage
-                    const response = await api.get(`/api/party/${id}`, {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    });
-                    setFormData(response.data); // Set the fetched party details in formData
-                } catch (error) {
-                    console.error('Error fetching party details:', error);
-                    setError('Failed to fetch party details.');
-                } finally {
-                    setLoading(false);
-                }
-            } else {
+        const fetchParty = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                const res = await api.get(`/api/party/${id}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                setFormData(res.data);
+            } catch (err) {
+                console.error('Failed to fetch party details:', err);
+                setError('Could not load party info.');
+            } finally {
                 setLoading(false);
             }
         };
 
-        fetchPartyDetail();
+        fetchParty();
     }, [id]);
 
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
     };
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         const token = localStorage.getItem('token');
-        if (!token) {
-            console.error('No token found in localStorage');
-            return;
-        }
 
         try {
-            if (id) {
-                // If an id exists, update the existing record
-                const response = await api.put(`/api/party/update`, formData, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        Accept: 'application/json',
-                    },
-                });
-                console.log('Party updated successfully:', response.data);
-                alert('Party updated successfully!');
-            } else {
-                // If no id, create a new record
-                const response = await api.post('/api/party', formData, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        Accept: 'application/json',
-                    },
-                });
-
-                console.log('Party created successfully:', response.data);
-                setpartyId(response.data.id);
-                alert('Party created successfully!');
-            }
-        } catch (error) {
-            console.error('There was an error saving the party!', error);
-            alert('There was an error saving the party!');
+            await api.put(`/api/party/${id}`, formData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: 'application/json',
+                },
+            });
+            alert('Party updated successfully!');
+            setIsUpdated(true);
+        } catch (err) {
+            console.error('Error updating party:', err);
+            alert('Error updating party!');
         }
     };
 
-    if (loading) {
-        return <Typography>Loading...</Typography>;
-    }
+    if (loading) return <Typography>Loading...</Typography>;
+    if (error) return <Typography color="error">{error}</Typography>;
 
     return (
         <div>
-            {partyID && <AftersubmitPartyCheck partyId={partyID} />}
-         
+            {isUpdated && <AftersubmitPartyCheck partyId={id} />}
             <Container sx={{ mt: 4 }}>
                 <Paper elevation={3} sx={{ p: 3 }}>
                     <Typography variant="h4" align="center" gutterBottom>
-                        {id ? 'Update Party' : 'Add Party'}
+                        Update Party
                     </Typography>
                     <form onSubmit={handleSubmit}>
                         <Grid container spacing={2}>
@@ -244,16 +219,15 @@ const PartyForm = () => {
                             </Grid>
                             <Grid item xs={12}>
                                 <Button type="submit" variant="contained" color="primary" fullWidth>
-                                    {id ? 'Update' : 'Submit'}
+                                    Update
                                 </Button>
                             </Grid>
                         </Grid>
                     </form>
                 </Paper>
             </Container>
-            
         </div>
     );
 };
 
-export default PartyForm;
+export default UpdateParty;

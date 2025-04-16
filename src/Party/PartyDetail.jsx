@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '/src/API';
-import NavbarTechnoFarm from '../NavBr/NavBarTechnoFarmOriginal';
 
 const PartyDetail = () => {
     const { id } = useParams(); // Extract the id from the URL
@@ -42,7 +41,7 @@ const PartyDetail = () => {
 
     return (
         <div>
-            <NavbarTechnoFarm />
+     
             <div className="p-4">
                 <h2 className="text-3xl font-semibold text-gray-800 mb-4">Party Details</h2>
                 {party ? (

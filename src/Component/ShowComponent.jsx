@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import api from '/src/API';
 import { useNavigate } from 'react-router-dom';
-import NavbarTechnoFarm from '../NavBr/NavBarTechnoFarmOriginal';
 import { TextField, Autocomplete } from '@mui/material';
 
 const ShowComponent = () => {
@@ -15,7 +14,12 @@ const ShowComponent = () => {
     const [categories, setCategories] = useState([]);
     const [selectedComponent, setSelectedComponent] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-
+    const [role, setrole] = useState(JSON.parse(localStorage.getItem('user')).role);
+    const [userName, SetUsername] = useState(JSON.parse(localStorage.getItem('user')).userName);
+    useEffect(() => {
+        setrole(JSON.parse(localStorage.getItem('user')).role);
+        SetUsername(JSON.parse(localStorage.getItem('user')).userName);
+    }, [])
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -111,16 +115,16 @@ const ShowComponent = () => {
 
     return (
         <div>
-            <NavbarTechnoFarm />
+     
             <div className="p-4">
-                <div className='flex justify-between'>
+                <div className='md:flex gap-2 justify-between'>
                     <h2 className="text-3xl font-semibold text-gray-800 mb-4">Components</h2>
-                    <button className='bg-blue-400 rounded-md font-bold px-2 h-10 hover:bg-blue-600' onClick={() => { navigate(`/AddCategory`) }} >
+                    {role=='DIRECTOR' && <button className='bg-blue-400 rounded-md font-bold px-2 mt-2 mr-5  h-10 hover:bg-blue-600' onClick={() => { navigate(`/AddCategory`) }} >
                         Add Category +
-                    </button>
-                    <button className='bg-blue-400 rounded-md font-bold px-2 h-10 hover:bg-blue-600' onClick={() => { navigate(`/AddComponent/:id`) }} >
+                    </button>}
+                    {role=='DIRECTOR' &&  <button className='bg-blue-400 rounded-md font-bold px-2 mt-2  h-10 hover:bg-blue-600' onClick={() => { navigate(`/AddComponent/:id`) }} >
                         Add Component +
-                    </button>
+                    </button>}
 
                 </div>   
                 {/* Autocomplete field for category selection */}
@@ -157,7 +161,9 @@ const ShowComponent = () => {
                             <tr>
                                 <th className="px-6 py-3 text-left text-md text-gray-700">No.</th>
                                 <th className="px-6 py-3 text-left text-md text-gray-700">Name</th>
+                                <th className="px-6 py-3 text-left text-md text-gray-700">Value</th>
                                 <th className="px-6 py-3 text-left text-md text-gray-700">Category</th>
+
                                 <th className="px-6 py-3 text-left text-md text-gray-700">Brand</th>
                                 <th className="px-6 py-3 text-left text-md text-gray-700">Stock</th>
                             </tr>
@@ -171,6 +177,7 @@ const ShowComponent = () => {
                                 >
                                     <td className="px-6 py-4 text-sm text-gray-700">{index + 1}</td>
                                     <td className="px-6 py-4 text-sm text-gray-700">{component.name}</td>
+                                    <td className="px-6 py-4 text-sm text-gray-700">{component.value}</td>
                                     <td className="px-6 py-4 text-sm text-gray-700">{component.catagory}</td>
                                     <td className="px-6 py-4 text-sm text-gray-700">{component.brand}</td>
                                     <td className="px-6 py-4 text-sm text-gray-700">{component.stock}</td>

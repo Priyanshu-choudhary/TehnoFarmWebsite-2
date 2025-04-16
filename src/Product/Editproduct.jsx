@@ -15,7 +15,6 @@ import { useParams } from 'react-router-dom'; // For URL params and navigation
 import { useNavigate } from 'react-router-dom';
 
 import api from '/src/API'; // Adjust path to your API instance
-import NavbarTechnoFarm from '../NavBr/NavBarTechnoFarmOriginal';
 
 const EditProduct = () => {
   const { id } = useParams(); // Get the product ID from URL params
@@ -44,7 +43,7 @@ const EditProduct = () => {
       }
       try {
         // Fetch product details by ID
-        const response = await api.get(`http://test.technofarm.in:9090/api/products/${id}`, {
+        const response = await api.get(`https://technofarm.in/api/products/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
             Accept: 'application/json',
@@ -65,7 +64,7 @@ const EditProduct = () => {
         });
 
         // Fetch form data (e.g., categories and components)
-        const formResponse = await api.get('http://test.technofarm.in:9090/api/products/add-form-data', {
+        const formResponse = await api.get('https://technofarm.in/api/products/add-form-data', {
           headers: {
             Authorization: `Bearer ${token}`,
             Accept: 'application/json',
@@ -130,7 +129,7 @@ const EditProduct = () => {
         console.error('No token found in localStorage');
         return;
       }
-      const response = await api.put(`http://test.technofarm.in:9090/api/products/${id}`, formattedData, {
+      const response = await api.put(`https://technofarm.in/api/products/${id}`, formattedData, {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: 'application/json',
@@ -149,7 +148,7 @@ const EditProduct = () => {
 
   return (
     <div>
-      <NavbarTechnoFarm />
+   
       <Container>
         <Typography variant="h4" gutterBottom align="center">Edit Product</Typography>
         <form onSubmit={handleSubmit}>

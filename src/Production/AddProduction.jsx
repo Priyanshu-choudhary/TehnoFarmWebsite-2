@@ -10,7 +10,6 @@ import {
     CircularProgress,
 } from '@mui/material';
 import api from '/src/API'; // Adjust the path to your API instance
-import NavbarTechnoFarm from '../NavBr/NavBarTechnoFarmOriginal';
 import AftersubmitProductionCheck from './AfterProductAdd';
 
 const AddProduction = () => {
@@ -35,7 +34,7 @@ const AddProduction = () => {
                 return;
             }
             try {
-                const response = await api.get('http://test.technofarm.in:9090/api/production/add', {
+                const response = await api.get('https://technofarm.in/api/production/add', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                         Accept: 'application/json',
@@ -91,7 +90,7 @@ const AddProduction = () => {
                 setLoading(false);
                 return;
             }
-            const response = await api.post('http://test.technofarm.in:9090/api/production', jsonData, {
+            const response = await api.post('https://technofarm.in/api/production', jsonData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     Accept: 'application/json',
@@ -112,7 +111,7 @@ const AddProduction = () => {
 
     return (
         <div>
-            <NavbarTechnoFarm />
+       
             <Container>
                 <Typography variant="h4" gutterBottom align="center">Add Product Stock</Typography>
                 <form onSubmit={handleSubmit}>

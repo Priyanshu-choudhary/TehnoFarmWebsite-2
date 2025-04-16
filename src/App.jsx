@@ -31,10 +31,15 @@ import ShowEmployee from './Employee/ShowEmployee';
 import EmployeeForm from './Employee/AddEmployee';
 import EmployeeDetails from './Employee/EmpoyeeAccountDetails';
 import OtherPage from './Others/OtherPage';
-import NavbarTechnoFarm from './NavBr/NavBarTechnoFarmOriginal';
+
 import NavAfterLogin from './NavBr/NavAfterLogin';
 import EditProduct from './Product/Editproduct';
 import AllSales from './Dashboard/Sales/showAllSales';
+import ShowExpenses from './Expenses/ShowExpenses';
+import AddExpenses from './Expenses/AddExpenses';
+import ShowFundTransfers from './FundTransfer/ShowAllTransfer';
+import AddTransferFund from './FundTransfer/AddFundTransfer';
+import UpdateParty from './Party/UpdateParty';
 
 
 function App() {
@@ -45,7 +50,7 @@ function App() {
   
   return (
     <Router>
-     {tocken?<NavAfterLogin/>:<NavBarCom/>}
+     {tocken?<NavBarCom/>:<NavBarCom/>}
      {/* <NavBarCom/> */}
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -72,6 +77,7 @@ function App() {
         <Route path="/ShowPArty" element={<ShowParty />} />
         <Route path="/AddParty" element={<PartyForm />} />
         <Route path="/AddParty/:id"  element={<PartyForm />} />
+        <Route path="/updateParty/:id" element={<UpdateParty />} />
         <Route path="/ShowComponent"  element={<ShowComponent />} />
         <Route path="/AddComponent/:id"  element={<ComponentForm />} />
         <Route path="/AddCategory"  element={<AddCategory />} />
@@ -80,6 +86,10 @@ function App() {
         <Route path="/AddEmployee"  element={<EmployeeForm />} />
         <Route path="/EmployeeDetails/:id"  element={<EmployeeDetails />} />
         <Route path="/Other"  element={<OtherPage />} />
+        <Route path="/showExpenses"  element={<ShowExpenses />} />
+        <Route path="/AddExpenses"  element={<AddExpenses />} />
+        <Route path="/ShowFundTransfers"  element={<ShowFundTransfers />} />
+        <Route path="/AddFundTransfers"  element={<AddTransferFund />} />
 
       </Routes>
     </Router>

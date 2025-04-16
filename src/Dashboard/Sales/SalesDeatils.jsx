@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import api from '/src/API';
 import DeleteIcon from '@mui/icons-material/Delete';
-import NavbarTechnoFarm from '../../NavBr/NavBarTechnoFarmOriginal';
+
 import AllSales from './showAllSales';
 export default function SaleDetails() {
     const { id } = useParams();
@@ -83,7 +83,7 @@ export default function SaleDetails() {
         if (!confirmed) return; // If the user cancels, exit the function
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`http://test.technofarm.in:9090/api/sales/${id}`, {
+            const response = await fetch(`https://technofarm.in/api/sales/${id}`, {
                 method: 'DELETE',
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -108,7 +108,7 @@ export default function SaleDetails() {
     return (
         <div>
             
-        <NavbarTechnoFarm/>
+   
         <div className="p-6 bg-white shadow-md rounded-lg">
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
                 <span className="text-lg">Party: {sale.party.name}</span>

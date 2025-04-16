@@ -4,7 +4,6 @@ import {
     CircularProgress
 } from '@mui/material';
 import api from '/src/API'; // Adjust the API path as needed
-import NavbarTechnoFarm from '../NavBr/NavBarTechnoFarmOriginal';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const EmployeeForm = () => {
@@ -109,7 +108,7 @@ const EmployeeForm = () => {
 
     return (
         <div>
-            <NavbarTechnoFarm />
+           
             <Container maxWidth="sm">
                 <Typography variant="h4" align="center" gutterBottom>
                     {id ? "Update Employee" : "Add New Employee"}

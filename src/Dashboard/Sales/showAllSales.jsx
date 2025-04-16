@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import api from '/src/API';
 import DeleteIcon from '@mui/icons-material/Delete';
-import NavbarTechnoFarm from '../../NavBr/NavBarTechnoFarmOriginal';
 import { useNavigate } from 'react-router-dom';
 import AftersubmitSaleCheck from './AftersubmitSaleCheck';
+import Unauthorized from '../../NotAuthorided';
 
 
 export default function AllSales() {
@@ -15,6 +15,10 @@ export default function AllSales() {
     const [loading, setLoading] = useState(true);
     const [selectedSale, setSelectedSale] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [role, setrole] = useState(JSON.parse(localStorage.getItem('user')).role);
+useEffect(() => {
+    setrole( JSON.parse(localStorage.getItem('user')).role);
+}, [])
 
     useEffect(() => {
         const fetchSales = async () => {
@@ -80,14 +84,17 @@ export default function AllSales() {
     if (!sale) {
         return <div>No sale details available.</div>;
     }
-
+    if (role!="DIRECTOR") {
+        return <Unauthorized/>;
+    }
+    
     const handleDeleteById = async (id) => {
         // Show a confirmation dialog to the user
         const confirmed = window.confirm("Are you sure you want to delete this item?");
         if (!confirmed) return; // If the user cancels, exit the function
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`http://test.technofarm.in:9090/api/sales/${id}`, {
+            const response = await fetch(`https://technofarm.in/api/sales/${id}`, {
                 method: 'DELETE',
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -112,7 +119,7 @@ export default function AllSales() {
     return (
         <div>
 
-            <NavbarTechnoFarm />
+   
             <div className="p-6 bg-white shadow-md rounded-lg">
 
 

@@ -10,7 +10,7 @@ import api from '/src/API'; // Make sure you have a suitable API utility
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
-import NavbarTechnoFarm from '../../NavBr/NavBarTechnoFarmOriginal';
+
 import { useParams, useNavigate } from 'react-router-dom';
 import AftersubmitSaleCheck from './AftersubmitSaleCheck';
 
@@ -93,7 +93,7 @@ const AddSaleForm = () => {
         });
 
 
-        setParties(response.data || []);
+        setParties(response.data.content || []);
       } catch (error) {
         console.error('Error fetching party data:', error);
       } finally {
@@ -209,7 +209,7 @@ const AddSaleForm = () => {
 
   return (
     <div>
-      <NavbarTechnoFarm />
+
       <Container maxWidth="md">
 
         <Typography variant="h4" gutterBottom align="center">
@@ -245,7 +245,7 @@ const AddSaleForm = () => {
                   <Autocomplete
                     options={parties}
 
-                    getOptionLabel={(option) => option.name}
+                    getOptionLabel={(option) =>`${option.name} - ${option.city}`}
                     onChange={(event, newValue) => {
                       handleInputChange({ target: { name: 'partyId', value: newValue ? newValue.id : '' } });
                     }}

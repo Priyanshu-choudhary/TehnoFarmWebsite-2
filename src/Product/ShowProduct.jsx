@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import api from '/src/API';
 import { useNavigate } from 'react-router-dom';
-import NavbarTechnoFarm from '../NavBr/NavBarTechnoFarmOriginal';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const ShowProduct = () => {
@@ -11,6 +10,12 @@ const ShowProduct = () => {
     const navigate = useNavigate();
     const [selectedPurchase, setSelectedPurchase] = useState(null); // State for selected purchase
     const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
+    const [role, setrole] = useState(JSON.parse(localStorage.getItem('user')).role);
+    const [userName, SetUsername] = useState(JSON.parse(localStorage.getItem('user')).userName);
+    useEffect(() => {
+        setrole(JSON.parse(localStorage.getItem('user')).role);
+        SetUsername(JSON.parse(localStorage.getItem('user')).userName);
+    }, [])
 
     // Fetch products from the API when the component mounts
     useEffect(() => {
@@ -39,7 +44,7 @@ const ShowProduct = () => {
 
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`http://test.technofarm.in:9090/api/products/${id}`, {
+            const response = await fetch(`https://technofarm.in/api/products/${id}`, {
                 method: 'DELETE',
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -74,16 +79,17 @@ const ShowProduct = () => {
 
     return (
         <div>
-            <NavbarTechnoFarm />
+         
             <div className="p-4">
                 <div className='flex justify-between mb-4'>
                     <h2 className="text-3xl font-semibold text-gray-800">Product Entries</h2>
-                    <button
+                    {role=='DIRECTOR' &&   <button
                         className='bg-blue-400 rounded-md font-bold px-2 h-10 hover:bg-blue-600'
                         onClick={() => navigate(`/Addproduct`)}
                     >
                         Add Product +
                     </button>
+}
                 </div>
 
                 <div className="overflow-x-auto">
@@ -183,10 +189,10 @@ const ShowProduct = () => {
                                 padding: "0.5rem 1rem", borderRadius: "0.25rem", cursor: "pointer", border: "none"
                             }}>Close</button>
 
-                            <button  onClick={() => navigate(`/EditProduct/${selectedPurchase.id}`)} style={{
+                           {role=='DIRECTOR' &&  <button  onClick={() => navigate(`/EditProduct/${selectedPurchase.id}`)} style={{
                                 marginTop: "1rem", backgroundColor: "#3b82f6", color: "white",
                                 padding: "0.5rem 1rem", borderRadius: "0.25rem", cursor: "pointer", border: "none"
-                            }}>Update</button>
+                            }}>Update</button>}
                         </div>
                     </div>
                 </div>

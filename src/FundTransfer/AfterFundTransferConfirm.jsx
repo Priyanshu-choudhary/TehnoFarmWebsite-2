@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react'
 import api from '/src/API';
 import { useParams, useNavigate } from 'react-router-dom';
 
-function AftersubmitPartyCheck({ partyId }) {
+function AftersubmitTransferCheck({ TransferId }) {
 
     const [loading, setLoading] = useState(false);
-    const [selectedPurchase, setSelectedPurchase] = useState(null);
+    const [selectedTransfer, setSelectedExpenses] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
     useEffect(() => {
-        handleRowClick(partyId);
-    }, [partyId])
+        handleRowClick(TransferId);
+    }, [TransferId])
 
-    const handleRowClick = async (partyId) => {
+    const handleRowClick = async (TransferId) => {
         try {
             const token = localStorage.getItem('token');
             if (!token) {
@@ -20,15 +20,15 @@ function AftersubmitPartyCheck({ partyId }) {
                 return;
             }
 
-            const response = await api.get(`/api/party/${partyId}`, {
+            const response = await api.get(`/api/transfer/${TransferId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     Accept: 'application/json',
                 },
             });
 
-            setSelectedPurchase(response.data);
-            console.log(response.data);
+            setSelectedExpenses(response.data);
+            // console.log(response.data);
 
             setIsModalOpen(true);
         } catch (error) {
@@ -37,8 +37,8 @@ function AftersubmitPartyCheck({ partyId }) {
     };
     const closeModal = () => {
         setIsModalOpen(false);
-        setSelectedPurchase(null);
-        navigate('/ShowPArty');
+        setSelectedExpenses(null);
+        navigate('/ShowFundTransfers');
     };
 
     if (loading) {
@@ -48,7 +48,7 @@ function AftersubmitPartyCheck({ partyId }) {
     return (
         <div>
 
-            {isModalOpen && selectedPurchase && (
+            {isModalOpen && selectedTransfer && (
                 <div style={{
                     position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
                     backgroundColor: "#E4F6E4", display: "flex",
@@ -60,26 +60,18 @@ function AftersubmitPartyCheck({ partyId }) {
                         boxShadow: "0 10px 15px rgba(0, 0, 0, 0.1)", maxWidth: "38rem", width: "100%"
                     }}>
                          <h2 className='text-green-700' style={{ fontSize: "1.25rem", fontWeight: "bold", marginBottom: "1rem" }}>
-                            Party ADDED
+                         Transfer Sucessful
                         </h2>
                         <div>
                             <table className="min-w-full bg-white border-y border-gray-300 ">
                                 <tbody className='m-4'>
 
-                                    <tr><td><strong>name</strong></td><td>{selectedPurchase.amountPaid}</td></tr>
-                                    <tr><td><strong>city:</strong></td><td>{selectedPurchase.city}</td></tr>
-                                    <tr><td><strong>businessName:</strong></td><td>{selectedPurchase.businessName}</td></tr>
-                                    <tr><td><strong>type:</strong></td><td>{selectedPurchase.type}</td></tr>
-
-                                    <tr><td><strong>shopNo:</strong></td><td>{selectedPurchase.shopNo}</td></tr>
-                                    <tr><td><strong>address</strong></td><td>{selectedPurchase.address}</td></tr>
-                                    <tr><td><strong>date:</strong></td><td>{selectedPurchase.date}</td></tr>
-                                    <tr><td><strong>gstNo:</strong></td><td>{selectedPurchase.gstNo}</td></tr>
-                                    <tr><td><strong>paymentRating:</strong></td><td>{selectedPurchase.paymentRating}</td></tr>
-                                    <tr><td><strong>salesRating:</strong></td><td>{selectedPurchase.salesRating}</td></tr>
-                                    <tr><td><strong>comment:</strong></td><td>{selectedPurchase.comment}</td></tr>
-                                    <tr><td><strong>Balance:</strong></td><td>{selectedPurchase.balance}</td></tr>
-                                    {/* Add other purchase details as needed */}
+                                    <tr><td><strong>From: </strong></td><td>{selectedTransfer.targetEmployee.firstName} {selectedTransfer.targetEmployee.lastName}</td></tr>
+                                    <tr><td><strong>To: </strong></td><td>{selectedTransfer.sourceEmployee.firstName} {selectedTransfer.sourceEmployee.lastName}</td></tr>
+                                    <tr><td><strong>Amount:</strong></td><td>₹{selectedTransfer.amount}</td></tr>
+                                    <tr><td><strong>Date:</strong></td><td>{selectedTransfer.transferDate}</td></tr>
+                                    <tr><td><strong>Comment:</strong></td><td>{selectedTransfer.comment}</td></tr>
+                                    
                                 </tbody>
                             </table>
 
@@ -111,4 +103,4 @@ function AftersubmitPartyCheck({ partyId }) {
     )
 }
 
-export default AftersubmitPartyCheck
+export default AftersubmitTransferCheck

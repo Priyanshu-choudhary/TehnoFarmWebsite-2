@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '/src/API';
-import NavbarTechnoFarm from '../NavBr/NavBarTechnoFarmOriginal';
 
 const EmployeeDetails = () => {
     const { id } = useParams();
@@ -47,7 +46,7 @@ const EmployeeDetails = () => {
 
     return (
         <div >
-            <NavbarTechnoFarm />
+        
           
             {/* <div className="mb-6">
                 <p><strong>ID:</strong> {employee.id}</p>

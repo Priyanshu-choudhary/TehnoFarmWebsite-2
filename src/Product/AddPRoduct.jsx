@@ -12,7 +12,6 @@ import {
 } from '@mui/material';
 import { AddCircle, RemoveCircle } from '@mui/icons-material';
 import api from '/src/API'; // Adjust path to your API instance
-import NavbarTechnoFarm from '../NavBr/NavBarTechnoFarmOriginal';
 
 const AddProduct = () => {
   const [loading, setLoading] = useState(true);
@@ -37,7 +36,7 @@ const AddProduct = () => {
         return;
       }
       try {
-        const response = await api.get('http://test.technofarm.in:9090/api/products/add-form-data', {
+        const response = await api.get('https://technofarm.in/api/products/add-form-data', {
           headers: {
             Authorization: `Bearer ${token}`,
             Accept: 'application/json',
@@ -102,7 +101,7 @@ const AddProduct = () => {
         console.error('No token found in localStorage');
         return;
       }
-      const response = await api.post('http://test.technofarm.in:9090/api/products', formattedData, {
+      const response = await api.post('https://technofarm.in/api/products', formattedData, {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: 'application/json',
@@ -120,7 +119,7 @@ const AddProduct = () => {
 
   return (
     <div>
-      <NavbarTechnoFarm />
+    
       <Container>
         <Typography variant="h4" gutterBottom align="center">Add New Product</Typography>
         <form onSubmit={handleSubmit}>

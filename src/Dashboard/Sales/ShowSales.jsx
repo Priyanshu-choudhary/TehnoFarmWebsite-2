@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import api from '/src/API';
 import { useNavigate } from 'react-router-dom';
-import NavbarTechnoFarm from '../../NavBr/NavBarTechnoFarmOriginal';
+
 import AllSales from './showAllSales';
 
 const ShowSales = () => {
@@ -51,7 +51,7 @@ const ShowSales = () => {
     return (
         
        <div>
-        <NavbarTechnoFarm/>
+  
          <div className="p-4">
        <div className='flex' style={{justifyContent:"space-between"}}>
        <h2 className="text-3xl font-semibold text-gray-800 mb-4">Sales List</h2>

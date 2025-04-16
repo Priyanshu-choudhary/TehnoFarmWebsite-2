@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { TextField, Button, Container, Typography, Paper, Grid } from '@mui/material';
 import api from '/src/API';
-import NavbarTechnoFarm from '../NavBr/NavBarTechnoFarmOriginal';
 
 const AddCategory = () => {
     const [formData, setFormData] = useState({
@@ -44,7 +43,7 @@ const AddCategory = () => {
 
     return (
         <div>
-            <NavbarTechnoFarm />
+           
             <Container sx={{ mt: 4 }}>
                 <Paper elevation={3} sx={{ p: 3 }}>
                     <Typography variant="h4" align="center" gutterBottom>

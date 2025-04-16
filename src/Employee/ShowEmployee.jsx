@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import api from '/src/API'; // Adjust the path according to your project structure
 import { useNavigate } from 'react-router-dom';
-// import NavbarTechnoFarm from '../NavBr/NavBarTechnoFarmOriginal';
-import { TextField, Autocomplete,Button } from '@mui/material';
-import NavbarTechnoFarm from '../NavBr/NavBarTechnoFarmOriginal';
+
+import { TextField, Autocomplete, Button } from '@mui/material';
+import Unauthorized from '/src/NotAuthorided';
 
 const ShowEmployee = () => {
     const [employees, setEmployees] = useState([]);
@@ -16,6 +16,14 @@ const ShowEmployee = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const navigate = useNavigate();
+
+    const [role, setrole] = useState(JSON.parse(localStorage.getItem('user')).role);
+    const [userName, SetUsername] = useState(JSON.parse(localStorage.getItem('user')).userName);
+    useEffect(() => {
+        setrole(JSON.parse(localStorage.getItem('user')).role);
+        SetUsername(JSON.parse(localStorage.getItem('user')).userName);
+    }, [])
+
 
     useEffect(() => {
         const fetchEmployees = async () => {
@@ -82,13 +90,14 @@ const ShowEmployee = () => {
 
     return (
         <div>
-            <NavbarTechnoFarm />
+      
             <div className="p-4">
                 <div className='flex justify-between'>
                     <h2 className="text-3xl font-semibold text-gray-800 mb-4">Employees</h2>
-                    <button className='bg-blue-400 rounded-md font-bold px-2 h-10 hover:bg-blue-600' onClick={() => { navigate(`/AddEmployee`) }} >
+                    {role=='DIRECTOR' &&  <button className='bg-blue-400 rounded-md font-bold px-2 h-10 hover:bg-blue-600' onClick={() => { navigate(`/AddEmployee`) }} >
                         Add Employee +
                     </button>
+                    }
                 </div>
 
                 <TextField
@@ -128,28 +137,53 @@ const ShowEmployee = () => {
                                     <td className="px-6 py-4 text-sm text-gray-700">{employee.monthlySalary} </td>
 
                                     <td className="px-6 py-4 text-sm text-gray-700">{employee.mobile}</td>
-                                    <td className="  ">
-                                        <Button
-                                            variant="contained"
-                                            color="primary"
-                                            size="small"
-                                            onClick={(event) => {
-                                                event.stopPropagation();
-                                                navigate(`/EmployeeDetails/${employee.id}`);
-                                            }}
-                                            sx={{
-                                                textTransform: 'none',
-                                                padding: '6px 16px',
-                                                fontWeight: 'bold',
-                                                borderRadius: 1,
-                                                '&:hover': {
-                                                    backgroundColor: '#1565c0',
-                                                },
-                                            }}
-                                        >
-                                            Account
-                                        </Button>
-                                    </td>
+                                    {role != "DIRECTOR" && userName == employee.userName &&
+                                        <td className="  ">
+                                            <Button
+                                                variant="contained"
+                                                color="primary"
+                                                size="small"
+                                                onClick={(event) => {
+                                                    event.stopPropagation();
+                                                    navigate(`/EmployeeDetails/${employee.id}`);
+                                                }}
+                                                sx={{
+                                                    textTransform: 'none',
+                                                    padding: '6px 16px',
+                                                    fontWeight: 'bold',
+                                                    borderRadius: 1,
+                                                    '&:hover': {
+                                                        backgroundColor: '#1565c0',
+                                                    },
+                                                }}
+                                            >
+                                                Account
+                                            </Button>
+                                        </td>}
+
+                                    {role == "DIRECTOR" &&
+                                        <td className="  ">
+                                            <Button
+                                                variant="contained"
+                                                color="primary"
+                                                size="small"
+                                                onClick={(event) => {
+                                                    event.stopPropagation();
+                                                    navigate(`/EmployeeDetails/${employee.id}`);
+                                                }}
+                                                sx={{
+                                                    textTransform: 'none',
+                                                    padding: '6px 16px',
+                                                    fontWeight: 'bold',
+                                                    borderRadius: 1,
+                                                    '&:hover': {
+                                                        backgroundColor: '#1565c0',
+                                                    },
+                                                }}
+                                            >
+                                                Account
+                                            </Button>
+                                        </td>}
                                 </tr>
                             ))}
                         </tbody>
@@ -183,9 +217,11 @@ const ShowEmployee = () => {
                                 <button onClick={closeModal} className="bg-blue-500 text-white px-4 py-2 rounded">
                                     Close
                                 </button>
-                                <button onClick={() => navigate(`/AddEmployee/${selectedEmployee.id}`)} className="bg-blue-500 text-white px-4 py-2 rounded">
+                               {role=='DIRECTOR' &&
+                               <button onClick={() => navigate(`/AddEmployee/${selectedEmployee.id}`)} className="bg-blue-500 text-white px-4 py-2 rounded">
                                     Update
                                 </button>
+                                }
                             </div>
                         </div>
                     </div>
