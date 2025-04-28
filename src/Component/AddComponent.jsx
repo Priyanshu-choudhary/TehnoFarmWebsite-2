@@ -124,7 +124,7 @@ const ComponentForm = () => {
             <Container sx={{ mt: 4 }}>
                 <Paper elevation={3} sx={{ p: 3 }}>
                     <Typography variant="h4" align="center" gutterBottom>
-                        {id ? 'Edit Component' : 'Add Component'}
+                        {id>0 ? 'Edit Component' : 'Add Component'}
                     </Typography>
                     <form onSubmit={handleSubmit}>
                         <Grid container spacing={2}>
