@@ -1,15 +1,10 @@
 import React from 'react';
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
-
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-
-
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
-
-import './TeamComponent.css'; // Ensure to include your CSS styles here
+import './TeamComponent.css';
 
 const teamMembers = [
   {
@@ -17,74 +12,107 @@ const teamMembers = [
     image: './harendraSingh.jpg',
     name: 'Harendra Singh',
     position: 'Co-founder',
+    bio: 'Visionary leader with 15+ years of industry experience driving strategic growth.'
   },
   {
     id: 2,
     image: './rakesh.jpg',
     name: 'Rakesh Deman',
     position: 'Co-founder',
+    bio: 'Operations expert specializing in scaling businesses efficiently.'
   },
-
+  {
+    id: 3,
+    image: './Team_mem3.jpg',
+    name: 'Gurpreet Singh',
+    position: 'Marketing Associate',
+    bio: 'Digital marketing strategist with a track record of successful campaigns.'
+  },
 ];
 
 const TeamComponent = () => {
   return (
-    <div className="responsive-container-block outer-container">
-      <div className="responsive-container-block inner-container">
-        <div className="responsive-cell-block wk-desk-4 wk-ipadp-4 wk-tab-12 wk-mobile-12">
-          <p className="text-blk heading-text">Meet our team</p>
-          <p className='text-xl mt-10 ml-2'> Management Team</p>
-          <p className="text-blk sub-heading-text">
-            {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit. Commodo enim risus sit nullam aliquam. Mattis. */}
-           
-            Our management team is composed of visionary leaders who bring a blend of strategic thinking and hands-on experience. They guide our company's direction and inspire us to achieve new heights every day. With a shared commitment to integrity, growth, and customer satisfaction, they are dedicated to leading our company towards a bright future.
+    <section className="team-section">
+      <div className="team-container">
+        <div className="team-header">
+          <h2 className="team-heading">Meet Our Leadership</h2>
+          <p className="team-subheading">
+            Our management team combines visionary leadership with hands-on expertise to drive our company forward.
           </p>
-          
         </div>
-        <div className="responsive-cell-block wk-desk-8 wk-ipadp-8 wk-tab-12 wk-mobile-12">
-          <p className="text-blk team-name">Management Team</p>
-          <div className="">
-            <Swiper
-              modules={[Navigation]}
-              navigation={{
-                nextEl: '.swiper-button-nexts',
-                prevEl: '.swiper-button-prevs',
-              }}
-              loop={true}
-              breakpoints={{
-                100: { slidesPerView: 1.2, spaceBetween: 40 },
-                340: { slidesPerView: 1.5, spaceBetween: 40 },
-                500: { slidesPerView: 1.5, spaceBetween: 20 },
-                630: { slidesPerView: 2, spaceBetween: 30 },
-                769: { slidesPerView: 1.5, spaceBetween: 30 },
-                890: { slidesPerView: 2, spaceBetween: 40 },
-                1090: { slidesPerView: 2.5, spaceBetween: 40 },
-              }}
-              className=""
-            >
-              {teamMembers.map((member) => (
-                 <SwiperSlide key={member.id}>
-                 <div className>
-                   <img style={{borderRadius:"50%"}} src={member.image} alt={member.name}/>
-                   <p className="ml-16 text-blk name font-bold">{member.name}</p>
-                   <p className="ml-16 position">{member.position}</p>
-                 </div>
-               </SwiperSlide>
-              ))}
-            </Swiper>
-            <div className="btn">
-              <div className="swiper-button-nexts">
-                <img className="arrow-right-1" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/Path.svg" alt="Next" />
-              </div>
-              <div className="swiper-button-prevs">
-                <img className="arrow-left-1" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/Path.svg" alt="Previous" />
-              </div>
+        
+        <div className="team-slider-wrapper">
+          <Swiper
+            modules={[Navigation, Pagination, Autoplay]}
+            navigation={{
+              nextEl: '.team-swiper-button-next',
+              prevEl: '.team-swiper-button-prev',
+            }}
+            pagination={{
+              clickable: true,
+              el: '.team-swiper-pagination',
+            }}
+            autoplay={{
+              delay: 5000,
+              disableOnInteraction: false,
+            }}
+            loop={true}
+            spaceBetween={30}
+            breakpoints={{
+              320: {
+                slidesPerView: 1,
+                spaceBetween: 20
+              },
+              640: {
+                slidesPerView: 2,
+                spaceBetween: 30
+              },
+              1024: {
+                slidesPerView: 3,
+                spaceBetween: 40
+              }
+            }}
+            className="team-swiper"
+          >
+            {teamMembers.map((member) => (
+              <SwiperSlide key={member.id}>
+                <div className="team-member-card">
+                  <div className="member-image-container">
+                    <img 
+                      src={member.image} 
+                      alt={member.name}
+                      className="member-image"
+                    />
+                    <div className="image-overlay"></div>
+                  </div>
+                  <div className="member-info">
+                    <h3 className="member-name">{member.name}</h3>
+                    <p className="member-position">{member.position}</p>
+                    <p className="member-bio">{member.bio}</p>
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+
+          <div className="team-swiper-controls">
+            <div className="team-swiper-pagination"></div>
+            <div className="team-swiper-navigation">
+              <button className="team-swiper-button-prev">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+              <button className="team-swiper-button-next">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
             </div>
           </div>
-          
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

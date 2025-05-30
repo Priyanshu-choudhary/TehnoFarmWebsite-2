@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TextField, Button, Container, Typography, Paper, Grid } from '@mui/material';
 import api from '/src/API';
 
-const AddCategory = () => {
+const AddCategory = ({ onCategoryAdded }) => {
     const [formData, setFormData] = useState({
         name: '',
         date: '',
@@ -34,57 +34,59 @@ const AddCategory = () => {
             });
             console.log('Category added successfully:', response.data);
             alert('Category added successfully!');
-            setFormData({ name: '', date: '' }); // Reset form fields
+            setFormData({ name: '', date: '' });
+
+            // ✨ Call the parent's fetchCategories function
+            if (onCategoryAdded) {
+                onCategoryAdded();
+            }
         } catch (error) {
-            console.error('There was an error adding the category!', error);
+            console.error('Error adding category!', error);
             alert('There was an error adding the category!');
         }
     };
 
     return (
-        <div>
-           
-            <Container sx={{ mt: 4 }}>
-                <Paper elevation={3} sx={{ p: 3 }}>
-                    <Typography variant="h4" align="center" gutterBottom>
-                        Add Category
-                    </Typography>
-                    <form onSubmit={handleSubmit}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                                <TextField
-                                    label="Category Name"
-                                    name="name"
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                    fullWidth
-                                    required
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    label="Date"
-                                    name="date"
-                                    type="date"
-                                    value={formData.date}
-                                    onChange={handleChange}
-                                    fullWidth
-                                    required
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Button type="submit" variant="contained" color="primary" fullWidth>
-                                    Submit
-                                </Button>
-                            </Grid>
+        <Container sx={{ mt: 4 }}>
+            <Paper elevation={3} sx={{ p: 3 }}>
+                <Typography variant="h4" align="center" gutterBottom>
+                    Add Category
+                </Typography>
+                <form onSubmit={handleSubmit}>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <TextField
+                                label="Category Name"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleChange}
+                                fullWidth
+                                required
+                            />
                         </Grid>
-                    </form>
-                </Paper>
-            </Container>
-        </div>
+                        <Grid item xs={12}>
+                            <TextField
+                                label="Date"
+                                name="date"
+                                type="date"
+                                value={formData.date}
+                                onChange={handleChange}
+                                fullWidth
+                                required
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button type="submit" variant="contained" color="primary" fullWidth>
+                                Submit
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </form>
+            </Paper>
+        </Container>
     );
 };
 

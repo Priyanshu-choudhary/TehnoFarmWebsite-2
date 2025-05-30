@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { TextField, Button, MenuItem, Container, Typography, Grid, Paper } from '@mui/material';
 import api from '/src/API';
 import { useParams, useNavigate } from 'react-router-dom';
+import AddCategory from './AddCategory';
 
 const ComponentForm = () => {
     const { id } = useParams(); // Extract the id from the URL
@@ -11,37 +12,39 @@ const ComponentForm = () => {
         value: '',
         brand: '',
         price: '',
-        pack: '', 
+        pack: '',
         catagory: '',
     });
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isopen, setisopen] = useState(false)
     const packageOptions = ['SMD', 'THROUGH HOLE', 'OTHER']; // Package options
 
-    useEffect(() => {
-        const fetchCategories = async () => {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                console.error('No token found in localStorage');
-                return;
-            }
+    const fetchCategories = async () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.error('No token found in localStorage');
+            return;
+        }
 
-            try {
-                const response = await api.get('/api/component/categories/all', {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        Accept: 'application/json',
-                    },
-                });
-                setCategories(response.data);
-            } catch (error) {
-                console.error('Error fetching categories:', error);
-                setError('Failed to load categories.');
-            } finally {
-                setLoading(false);
-            }
-        };
+        try {
+            const response = await api.get('/api/component/categories/all', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: 'application/json',
+                },
+            });
+            setCategories(response.data);
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+            setError('Failed to load categories.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
 
         const fetchComponentData = async () => {
             if (id) {
@@ -86,7 +89,9 @@ const ComponentForm = () => {
 
         try {
             let response;
-            if (id) {
+            const isUpdate = id && !isNaN(id);
+
+            if (isUpdate) {
                 // Update existing component
                 response = await api.put(`/api/component/${id}`, formData, {
                     headers: {
@@ -98,7 +103,8 @@ const ComponentForm = () => {
                 alert('Component updated successfully!');
             } else {
                 // Create a new component
-                response = await api.post('/api/component', formData, {
+                const { id, ...newFormData } = formData;  // <-- REMOVE id field while creating
+                response = await api.post('/api/component', newFormData, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                         Accept: 'application/json',
@@ -107,12 +113,15 @@ const ComponentForm = () => {
                 console.log('Component created successfully:', response.data);
                 alert('Component created successfully!');
             }
-            navigate('/ShowComponent'); // Redirect to components list or another page after submission
+
+            navigate('/ShowComponent');
         } catch (error) {
             console.error('There was an error saving the component!', error);
             alert('There was an error saving the component!');
         }
     };
+
+
 
     if (loading) {
         return <Typography>Loading...</Typography>;
@@ -120,11 +129,12 @@ const ComponentForm = () => {
 
     return (
         <div>
-          
+
             <Container sx={{ mt: 4 }}>
                 <Paper elevation={3} sx={{ p: 3 }}>
                     <Typography variant="h4" align="center" gutterBottom>
-                        {id>0 ? 'Edit Component' : 'Add Component'}
+                        {id && !isNaN(id) ? 'Edit Component' : 'Add Component'}
+
                     </Typography>
                     <form onSubmit={handleSubmit}>
                         <Grid container spacing={2}>
@@ -166,52 +176,80 @@ const ComponentForm = () => {
                                     onChange={handleChange}
                                     fullWidth
                                     type="number"
+                                    inputProps={{ step: "0.01" }}
                                     required
                                 />
                             </Grid>
-                            <Grid item xs={6}>
-                                <TextField
-                                    label="Package"
-                                    name="pack"
-                                    value={formData.pack}
-                                    onChange={handleChange}
-                                    fullWidth
-                                    select
-                                    required
-                                >
-                                    {packageOptions.map((option) => (
-                                        <MenuItem key={option} value={option}>
-                                            {option}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
+                            <Grid item xs={12} container spacing={2} alignItems="center">
+                                {/* Package Dropdown */}
+                                <Grid item xs={4}>
+                                    <TextField
+                                        label="Package"
+                                        name="pack"
+                                        value={formData.pack}
+                                        onChange={handleChange}
+                                        fullWidth
+                                        select
+                                        required
+                                    >
+                                        {packageOptions.map((option) => (
+                                            <MenuItem key={option} value={option}>
+                                                {option}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                </Grid>
+
+                                {/* Category Dropdown */}
+                                <Grid item xs={4}>
+                                    <TextField
+                                        label="Category"
+                                        name="catagory"
+                                        value={formData.catagory}
+                                        onChange={handleChange}
+                                        fullWidth
+                                        select
+                                        required
+                                    >
+                                        {categories.map((catagory) => (
+                                            <MenuItem key={catagory.id} value={catagory.name}>
+                                                {catagory.name}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                </Grid>
+
+                                {/* Open/Close AddCategory Button */}
+                                <Grid item xs={4}>
+                                    <Button
+                                        variant="contained"
+                                        color="secondary"
+                                        fullWidth
+                                        onClick={() => setisopen(!isopen)}
+                                    >
+                                        {isopen ? 'Close' : 'Add Category'}
+                                    </Button>
+                                </Grid>
                             </Grid>
-                            <Grid item xs={6}>
-                                <TextField
-                                    label="Category"
-                                    name="catagory"
-                                    value={formData.catagory}
-                                    onChange={handleChange}
-                                    fullWidth
-                                    select
-                                    required
-                                >
-                                    {categories.map((catagory) => (
-                                        <MenuItem key={catagory.id} value={catagory.name}>
-                                            {catagory.name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
+
+                            {/* AddCategory Form */}
+
                             <Grid item xs={12}>
                                 <Button type="submit" variant="contained" color="primary" fullWidth>
                                     {id ? 'Save' : 'Submit'}
                                 </Button>
                             </Grid>
                         </Grid>
+
                     </form>
                 </Paper>
             </Container>
+            {isopen && (
+                <Grid item xs={12}>
+                    <AddCategory onCategoryAdded={fetchCategories} />
+                </Grid>
+            )}
+
         </div>
     );
 };

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Box } from '@mui/material'; // optional, for cleaner layout
 import {
   Autocomplete,
   Container,
@@ -27,32 +28,35 @@ const AddProduct = () => {
     labourCost: 0,
   });
 
+  const fetchFormData = async () => {
+    setLoading(true);
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found in localStorage');
+      setLoading(false);
+      return;
+    }
+    try {
+      const response = await api.get('https://technofarm.in/api/products/add-form-data', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        },
+      });
+      const { compCategories, components } = response.data;
+      setCompCategories(compCategories || []);
+      setComponents(components || []);
+    } catch (error) {
+      console.error('Error fetching form data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchFormData = async () => {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        console.error('No token found in localStorage');
-        setLoading(false);
-        return;
-      }
-      try {
-        const response = await api.get('https://technofarm.in/api/products/add-form-data', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: 'application/json',
-          },
-        });
-        const { compCategories, components } = response.data;
-        setCompCategories(compCategories || []);
-        setComponents(components || []);
-      } catch (error) {
-        console.error('Error fetching form data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchFormData();
   }, []);
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -88,6 +92,8 @@ const AddProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const confirmed = window.confirm("Are you sure you want to Add this product?");
+  if (!confirmed) return;
     const formattedData = {
       ...formData,
       compId: formData.compDetails.map((item) => item.compId),
@@ -107,7 +113,8 @@ const AddProduct = () => {
           Accept: 'application/json',
         },
       });
-      console.log('Product added successfully:', response.data);
+
+      console.log('Product added successfully:', formattedData);
       alert('Product added successfully!');
     } catch (error) {
       console.error('Error adding product:', error);
@@ -119,7 +126,7 @@ const AddProduct = () => {
 
   return (
     <div>
-    
+
       <Container>
         <Typography variant="h4" gutterBottom align="center">Add New Product</Typography>
         <form onSubmit={handleSubmit}>
@@ -139,9 +146,16 @@ const AddProduct = () => {
                 <Autocomplete
                   options={compCategories}
                   getOptionLabel={(option) => option}
-                  onChange={(event, newValue) => handleInputChange({ target: { name: 'catagory', value: newValue } })}
+                  value={formData.catagory || null}
+                  onChange={(event, newValue) =>
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      catagory: newValue,
+                    }))
+                  }
                   renderInput={(params) => <TextField {...params} label="Category" required />}
                 />
+
               </Grid>
 
               <Grid item xs={6}>
@@ -169,17 +183,35 @@ const AddProduct = () => {
 
               {formData.compDetails.map((compDetail, index) => (
                 <React.Fragment key={index}>
-                  <Grid item xs={6}>
-                    <Autocomplete
-                      options={components}
-                      getOptionLabel={(option) => `${option.name} - ${option.id}`}
-                      onChange={(event, newValue) =>
-                        handleCompDetailChange(index, 'compId', newValue ? newValue.id : null)
-                      }
-                      renderInput={(params) => (
-                        <TextField {...params} label="Component" required />
-                      )}
-                    />
+                  <Grid item xs={5}>
+               
+
+<Autocomplete
+  options={components}
+  getOptionLabel={(option) => {
+    if (!option) return ''; // fallback if option is null
+    return `${option.id || ''} - ${option.name || ''} - ${option.value || ''} - ${option.pack || ''}`;
+  }}
+  value={components.find((c) => c.id === compDetail.compId) || null}
+  onChange={(event, newValue) =>
+    handleCompDetailChange(index, 'compId', newValue ? newValue.id : null)
+  }
+  renderOption={(props, option) => (
+    <li {...props}>
+      <Box display="flex" gap={1}>
+        <span style={{ fontWeight: 'bold', color: '#1976d2' }}>{option.id}</span> -
+        <span style={{ color: '#4caf50' }}>{option.name}</span> -
+        <span style={{ color: '#ff9800' }}>{option.value}</span> -
+        <span style={{ color: '#9c27b0' }}>{option.pack}</span>
+      </Box>
+    </li>
+  )}
+  renderInput={(params) => (
+    <TextField {...params} label="Component" required />
+  )}
+/>
+
+
                   </Grid>
                   <Grid item xs={2}>
                     <TextField
@@ -193,28 +225,38 @@ const AddProduct = () => {
                       required
                     />
                   </Grid>
-                 
-                  
+
+
                   <Grid item xs={1}>
-                    <IconButton  sx={{height:50}} onClick={() => removeComponentRow(index)} color="error">
+                    <IconButton sx={{ height: 50 }} onClick={() => removeComponentRow(index)} color="error">
                       <RemoveCircle />
                     </IconButton>
                   </Grid>
 
                 </React.Fragment>
               ))}
-              <Grid item xs={3}>
-                    <Button
-                      variant="outlined"
-                      startIcon={<AddCircle />}
-                      onClick={addComponentRow}
-                      color="primary"
-                      sx={{height:55}}
-                    >
-                      
-                      Add Component
-                    </Button>
-                  </Grid>
+              <Grid  container justifyContent="flex" xs={4}>
+                <Button
+                  variant="outlined"
+                  startIcon={<AddCircle />}
+                  onClick={addComponentRow}
+                  color="primary"
+                  sx={{ height: 55 }}
+                >
+
+                  Add Component
+                </Button>
+                <Button
+                  className='mx-2'
+                  variant="outlined"
+                  color="secondary"
+                  onClick={fetchFormData}
+                  disabled={loading}
+                  sx={{ height: 55 }}
+                >
+                  {loading ? 'Refreshing...' : 'Refresh Lists'}
+                </Button>
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   label="Comment"
@@ -234,6 +276,10 @@ const AddProduct = () => {
 
 
             </Grid>
+            <Grid sx={{ mb: 2 }}>
+
+            </Grid>
+
             <Button type="submit" variant="contained" color="primary" sx={{ marginTop: 2 }}>
               Add Product
             </Button>

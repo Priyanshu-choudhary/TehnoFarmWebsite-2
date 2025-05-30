@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Box } from '@mui/material'; // optional, for cleaner layout
 import {
   Autocomplete,
   Container,
@@ -33,54 +34,114 @@ const EditProduct = () => {
     labourCost: 0,
   });
 
-  useEffect(() => {
-    const fetchProductData = async () => {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        console.error('No token found in localStorage');
-        setLoading(false);
-        return;
-      }
-      try {
-        // Fetch product details by ID
-        const response = await api.get(`https://technofarm.in/api/products/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: 'application/json',
-          },
-        });
-        const productData = response.data;
-        setFormData({
-          name: productData.name,
-          catagory: productData.catagory,
-          isActive: productData.isActive,
-          version: productData.version,
-          comment: productData.comment,
-          compDetails: productData.compQuantity.map(comp => ({
-            compId: comp.component.id,
-            compQuant: comp.quantity.toString(),
-          })),
-          labourCost: productData.labourCost,
-        });
+  const fetchProductData = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found in localStorage');
+      setLoading(false);
+      return;
+    }
+    try {
+      // Fetch product details by ID
+      const response = await api.get(`https://technofarm.in/api/products/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        },
+      });
+      const productData = response.data;
+      setFormData({
+        name: productData.name,
+        catagory: productData.catagory,
+        isActive: productData.isActive,
+        version: productData.version,
+        comment: productData.comment,
+        compDetails: productData.compQuantity.map(comp => ({
+          compId: comp.component.id,
+          compQuant: comp.quantity.toString(),
+        })),
+        labourCost: productData.labourCost,
+      });
 
-        // Fetch form data (e.g., categories and components)
-        const formResponse = await api.get('https://technofarm.in/api/products/add-form-data', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: 'application/json',
-          },
-        });
-        const { compCategories, components } = formResponse.data;
-        setCompCategories(compCategories || []);
-        setComponents(components || []);
-      } catch (error) {
-        console.error('Error fetching product or form data:', error);
-      } finally {
-        setLoading(false);
-      }
+      // Fetch form data (e.g., categories and components)
+      const formResponse = await api.get('https://technofarm.in/api/products/add-form-data', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        },
+      });
+      const { compCategories, components } = formResponse.data;
+      setCompCategories(compCategories || []);
+      setComponents(components || []);
+    } catch (error) {
+      console.error('Error fetching product or form data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchProductDetails();
+      await fetchFormLists();
     };
-    fetchProductData();
-  }, [id]);
+    fetchData();
+  }, []);
+
+
+  const fetchProductDetails = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found in localStorage');
+      setLoading(false);
+      return;
+    }
+    try {
+      const response = await api.get(`https://technofarm.in/api/products/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        },
+      });
+      const productData = response.data;
+      setFormData({
+        name: productData.name,
+        catagory: productData.catagory,
+        isActive: productData.isActive,
+        version: productData.version,
+        comment: productData.comment,
+        compDetails: productData.compQuantity.map(comp => ({
+          compId: comp.component.id,
+          compQuant: comp.quantity.toString(),
+        })),
+        labourCost: productData.labourCost,
+      });
+    } catch (error) {
+      console.error('Error fetching product:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchFormLists = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found in localStorage');
+      return;
+    }
+    try {
+      const formResponse = await api.get('https://technofarm.in/api/products/add-form-data', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        },
+      });
+      const { compCategories, components } = formResponse.data;
+      setCompCategories(compCategories || []);
+      setComponents(components || []);
+    } catch (error) {
+      console.error('Error fetching form lists:', error);
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -116,13 +177,17 @@ const EditProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
+    const confirmed = window.confirm("Are you sure you want to update this product?");
+    if (!confirmed) return;
+  
     const formattedData = {
       ...formData,
       compId: formData.compDetails.map((item) => item.compId),
       compQuant: formData.compDetails.map((item) => Number(item.compQuant)),
     };
-    delete formattedData.compDetails; // Remove compDetails since it's already split into compId and compQuant arrays
-
+    delete formattedData.compDetails;
+  
     try {
       const token = localStorage.getItem('token');
       if (!token) {
@@ -137,18 +202,19 @@ const EditProduct = () => {
       });
       console.log('Product updated successfully:', response.data);
       alert('Product updated successfully!');
-      navigate('/ShowProduct'); // Redirect to the product list or desired page
+      navigate('/ShowProduct');
     } catch (error) {
       console.error('Error updating product:', error);
       alert('Failed to update product. Please try again.');
     }
   };
+  
 
   if (loading) return <CircularProgress />;
 
   return (
     <div>
-   
+
       <Container>
         <Typography variant="h4" gutterBottom align="center">Edit Product</Typography>
         <form onSubmit={handleSubmit}>
@@ -200,15 +266,30 @@ const EditProduct = () => {
                   <Grid item xs={6}>
                     <Autocomplete
                       options={components}
-                      getOptionLabel={(option) => `${option.name} - ${option.id}`}
+                      getOptionLabel={(option) => {
+                        if (!option) return ''; // fallback if option is null
+                        return `${option.id || ''} - ${option.name || ''} - ${option.value || ''} - ${option.pack || ''}`;
+                      }}
+                      value={components.find((c) => c.id === compDetail.compId) || null}
                       onChange={(event, newValue) =>
                         handleCompDetailChange(index, 'compId', newValue ? newValue.id : null)
                       }
-                      value={components.find(c => c.id === compDetail.compId) || null}
-                      renderInput={(params) => <TextField {...params} label="Component" required />}
+                      renderOption={(props, option) => (
+                        <li {...props}>
+                          <Box display="flex" gap={1}>
+                            <span style={{ fontWeight: 'bold', color: '#1976d2' }}>{option.id}</span> -
+                            <span style={{ color: '#4caf50' }}>{option.name}</span> -
+                            <span style={{ color: '#ff9800' }}>{option.value}</span> -
+                            <span style={{ color: '#9c27b0' }}>{option.pack}</span>
+                          </Box>
+                        </li>
+                      )}
+                      renderInput={(params) => (
+                        <TextField {...params} label="Component" required />
+                      )}
                     />
                   </Grid>
-                  <Grid item xs={2}>
+                  <Grid item xs={1.5}>
                     <TextField
                       label="Quantity"
                       type="number"
@@ -218,23 +299,36 @@ const EditProduct = () => {
                       required
                     />
                   </Grid>
-                  <Grid item xs={1}>
+                  <Grid item xs={0}>
                     <IconButton sx={{ height: 50 }} onClick={() => removeComponentRow(index)} color="error">
                       <RemoveCircle />
                     </IconButton>
                   </Grid>
                 </React.Fragment>
               ))}
-              <Grid item xs={3}>
+              <Grid container justifyContent="flex" xs={3}>
                 <Button
+                className='mx-1 mt-3'
                   variant="outlined"
                   startIcon={<AddCircle />}
                   onClick={addComponentRow}
                   color="primary"
                   sx={{ height: 55 }}
                 >
+
                   Add Component
                 </Button>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  className='mx-1 mt-4'
+                  onClick={fetchFormLists}
+                  disabled={loading}
+                  sx={{ height: 55 }}
+                >
+                  {loading ? 'Refreshing...' : 'Refresh Lists'}
+                </Button>
+
               </Grid>
               <Grid item xs={12}>
                 <TextField
