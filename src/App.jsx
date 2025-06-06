@@ -40,6 +40,7 @@ import AddExpenses from './Expenses/AddExpenses';
 import ShowFundTransfers from './FundTransfer/ShowAllTransfer';
 import AddTransferFund from './FundTransfer/AddFundTransfer';
 import UpdateParty from './Party/UpdateParty';
+import BOMGenerator from './GenerateBOM/BOMGenerator';
 
 
 function App() {
@@ -90,6 +91,7 @@ function App() {
         <Route path="/AddExpenses"  element={<AddExpenses />} />
         <Route path="/ShowFundTransfers"  element={<ShowFundTransfers />} />
         <Route path="/AddFundTransfers"  element={<AddTransferFund />} />
+        <Route path="/BOMGenerator"  element={<BOMGenerator />} />
 
       </Routes>
     </Router>

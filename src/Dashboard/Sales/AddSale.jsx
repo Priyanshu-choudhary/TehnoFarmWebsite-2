@@ -232,7 +232,7 @@ const AddSaleForm = () => {
                       handleInputChange({ target: { name: 'employeeId', value: newValue ? newValue.id : '' } });
                     }}
                     renderInput={(params) => (
-                      <TextField {...params} label="Employee" variant="outlined" required />
+                      <TextField {...params} label="Employee" variant="outlined"  />
                     )}
                     value={employees.find(emp => emp.id === formData.employeeId) || null}
                     isOptionEqualToValue={(option, value) => option.id === value.id}
@@ -250,7 +250,7 @@ const AddSaleForm = () => {
                       handleInputChange({ target: { name: 'partyId', value: newValue ? newValue.id : '' } });
                     }}
                     renderInput={(params) => (
-                      <TextField {...params} label="Party" variant="outlined" required />
+                      <TextField {...params} label="Party" variant="outlined"  />
                     )}
                     value={parties.find(party => party.id === formData.partyId) || null}
                     isOptionEqualToValue={(option, value) => option.id === value.id}
@@ -412,7 +412,7 @@ const ProductSection = ({ title, items, onAdd, onRemove, onChange, products }) =
                 onChange(index, 'product', { id: newValue ? newValue.id : '' });
               }}
               renderInput={(params) => (
-                <TextField {...params} label="Product" variant="outlined" required />
+                <TextField {...params} label="Product" variant="outlined"  />
               )}
               value={products.find(product => product.id === item.product.id) || null}
               isOptionEqualToValue={(option, value) => option.id === value.id}

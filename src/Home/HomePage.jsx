@@ -2,7 +2,7 @@ import React from 'react';
 import "/src/scss/style.scss";
 import HeroSection from './HeroSection-1';
 
-import ProductionSection from './ProductionSection';
+
 import WhyChooseUs from './WhyChooseUs';
 import HelpSection from './HelpSection';
 import PopularProducts from './popularProducts';

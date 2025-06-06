@@ -23,9 +23,9 @@ const teamMembers = [
   },
   {
     id: 3,
-    image: './Team_mem3.jpg',
-    name: 'Gurpreet Singh',
-    position: 'Marketing Associate',
+    image: './Team_mem.jpg',
+    name: 'Gurvinder Singh',
+    position: 'Marketing Head',
     bio: 'Digital marketing strategist with a track record of successful campaigns.'
   },
 ];

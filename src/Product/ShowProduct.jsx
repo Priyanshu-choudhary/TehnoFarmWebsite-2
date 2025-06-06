@@ -8,7 +8,7 @@ const ShowProduct = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
-    const [selectedPurchase, setSelectedPurchase] = useState(null); // State for selected purchase
+    const [selectedProduct, setSelectedProduct] = useState(null); // State for selected purchase
     const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
     const [role, setrole] = useState(JSON.parse(localStorage.getItem('user')).role);
     const [userName, SetUsername] = useState(JSON.parse(localStorage.getItem('user')).userName);
@@ -22,7 +22,7 @@ const ShowProduct = () => {
         const fetchProducts = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await api.get('/api/products', {
+                const response = await api.get('/api/products/list', {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setProducts(response.data);
@@ -103,14 +103,38 @@ const ShowProduct = () => {
     // Loading and error states
     if (loading) return <div>Loading product data...</div>;
     if (error) return <div>{error}</div>;
-    const openModal = (purchase) => {
-        setSelectedPurchase(purchase);
+    const openModal = async (id) => {
+
+        const token = localStorage.getItem('token');
+        const headers = {
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/json',
+        };
+
+        try {
+            const response = await api.get(`https://technofarm.in/api/products/${id}`, { headers });
+    
+            if (!response?.data) {
+                alert("Product data not found.");
+                return;
+            }
+    
+        if(response.status===200){
+        setSelectedProduct(response.data);
         setIsModalOpen(true);
+        }else{
+            console.error("failed to fetch");
+            
+        }
+    }catch (error) {
+            console.error("Error get by item Id :", error);
+            alert("An error occurred while loading the item by Id .");
+        }
     };
 
     const closeModal = () => {
         setIsModalOpen(false);
-        setSelectedPurchase(null);
+        setSelectedProduct(null);
     };
 
     return (
@@ -132,7 +156,7 @@ const ShowProduct = () => {
                     <table className="min-w-full bg-white border border-gray-300">
                         <thead className="bg-gray-300 font-bold">
                             <tr>
-                                {['No.', 'Product Name', 'Category', 'Version', 'Labour Cost', 'Comment', 'Stock'].map((header) => (
+                                {['No.', 'Product Name',  'Version', 'Labour Cost', 'Comment', 'Stock'].map((header) => (
                                     <th key={header} className="px-6 py-3 text-left text-md text-gray-700">{header}</th>
                                 ))}
                             </tr>
@@ -143,12 +167,12 @@ const ShowProduct = () => {
 
                                     className={`cursor-pointer ${index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}`}
                                     // onClick={() => navigate(`/EditProduct/${item.id}`)}
-                                    onClick={() => openModal(item)} key={item.id}
+                                    onClick={() => openModal(item.id)} key={item.id}
                                 >
 
                                     <td className="px-6 py-4 text-sm text-gray-700">{index + 1}</td>
                                     <td className="px-6 py-4 text-sm text-gray-700">{item.name ?? 'Unknown'}</td>
-                                    <td className="px-6 py-4 text-sm text-gray-700">{item.catagory ?? 'N/A'}</td>
+                                    {/* <td className="px-6 py-4 text-sm text-gray-700">{item.catagory ?? 'N/A'}</td> */}
                                     <td className="px-6 py-4 text-sm text-gray-700">{item.version ?? 'N/A'}</td>
                                     <td className="px-6 py-4 text-sm text-gray-700">{item.labourCost ?? 'N/A'}</td>
                                     <td className="px-6 py-4 text-sm text-gray-700">{item.comment ?? 'No comments'}</td>
@@ -168,7 +192,7 @@ const ShowProduct = () => {
                 </div>
             </div>
 
-            {isModalOpen && selectedPurchase && (
+            {isModalOpen && selectedProduct && (
                 <div
                     style={{
                         position: "fixed",
@@ -205,18 +229,18 @@ const ShowProduct = () => {
                                 marginBottom: "1rem",
                             }}
                         >
-                            {selectedPurchase.name}
+                            {selectedProduct.name}
                         </h2>
                         <div>
                             <table className="min-w-full bg-white border-y border-gray-300 ">
                                 <tbody className='m-4'>
 
-                                    <tr><td><strong>labourCost:</strong></td><td>{selectedPurchase.labourCost}</td></tr>
-                                    <tr><td><strong>Catagory:</strong></td><td>{selectedPurchase.catagory}</td></tr>
-                                    <tr><td><strong>Comment:</strong></td><td>{selectedPurchase.comment}</td></tr>
-                                    <tr><td><strong>stock Amount:</strong></td><td>{selectedPurchase.stock}</td></tr>
-                                    <tr><td><strong>No. of Components:</strong></td><td>{selectedPurchase.compQuantity?.length}</td></tr>
-                                    <tr><td><strong>version:</strong></td><td>{selectedPurchase.version}</td></tr>
+                                    <tr><td><strong>labourCost:</strong></td><td>{selectedProduct.labourCost}</td></tr>
+                                    <tr><td><strong>Catagory:</strong></td><td>{selectedProduct.catagory}</td></tr>
+                                    <tr><td><strong>Comment:</strong></td><td>{selectedProduct.comment}</td></tr>
+                                    <tr><td><strong>stock Amount:</strong></td><td>{selectedProduct.stock}</td></tr>
+                                    <tr><td><strong>No. of Components:</strong></td><td>{selectedProduct.compQuantity?.length}</td></tr>
+                                    <tr><td><strong>version:</strong></td><td>{selectedProduct.version}</td></tr>
 
                                 </tbody>
 
@@ -229,16 +253,18 @@ const ShowProduct = () => {
                                             <th style={{ borderBottom: "1px solid #e5e7eb", padding: "0.5rem" }}>Quantity</th>
                                             <th style={{ borderBottom: "1px solid #e5e7eb", padding: "0.5rem" }}>Price</th>
                                             <th style={{ borderBottom: "1px solid #e5e7eb", padding: "0.5rem" }}>value</th>
+                                             <th style={{ borderBottom: "1px solid #e5e7eb", padding: "0.5rem" }}>Category</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {selectedPurchase.compQuantity.map((comp, index) => (
+                                        {selectedProduct.compQuantity.map((comp, index) => (
                                             <tr key={index} >
                                                 <td style={{ padding: "0.5rem", fontWeight: "revert" }}>{comp.component.name} {comp.component.value} {comp.component.pack} {comp.component.catagory}</td>
 
                                                 <td style={{ padding: "0.5rem" }}>{comp.quantity}</td>
                                                 <td style={{ padding: "0.5rem" }}>{comp.component.price}</td>
                                                 <td style={{ padding: "0.5rem" }}>{comp.component.value}</td>
+                                                 <td style={{ padding: "0.5rem" }}>{comp.component.catagory}</td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -252,12 +278,12 @@ const ShowProduct = () => {
                             }}>Close</button>
 
 
-                            <button onClick={() => clone(selectedPurchase.id)} style={{
+                            <button onClick={() => clone(selectedProduct.id)} style={{
                                 marginTop: "1rem", backgroundColor: "#3b82f6", color: "white",
                                 padding: "0.5rem 1rem", borderRadius: "0.25rem", cursor: "pointer", border: "none"
                             }}>clone</button>
 
-                            {role == 'DIRECTOR' && <button onClick={() => navigate(`/EditProduct/${selectedPurchase.id}`)} style={{
+                            {role == 'DIRECTOR' && <button onClick={() => navigate(`/EditProduct/${selectedProduct.id}`)} style={{
                                 marginTop: "1rem", backgroundColor: "#3b82f6", color: "white",
                                 padding: "0.5rem 1rem", borderRadius: "0.25rem", cursor: "pointer", border: "none"
                             }}>Update</button>}

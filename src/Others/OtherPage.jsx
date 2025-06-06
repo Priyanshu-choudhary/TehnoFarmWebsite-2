@@ -66,6 +66,17 @@ function OtherPage() {
           >
             Fund Transfer
           </Button>
+
+                 <Button
+
+            variant="contained"
+
+            size="large"
+            onClick={() => handleNavigate('/BOMGenerator')}
+            sx={{ width: '100%' }}
+          >
+            Generate BOM
+          </Button>
         </Box>
       </Paper>
     </Container>
