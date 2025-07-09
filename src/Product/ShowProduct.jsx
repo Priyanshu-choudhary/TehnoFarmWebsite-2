@@ -50,7 +50,7 @@ const ShowProduct = () => {
         };
     
         try {
-            const response = await api.get(`https://technofarm.in/api/products/${id}`, { headers });
+            const response = await api.get(`http://localhost:80/api/products/${id}`, { headers });
     
             if (!response?.data) {
                 alert("Product data not found.");
@@ -84,7 +84,7 @@ const ShowProduct = () => {
                 compQuant
             };
     
-            const response2 = await api.post('https://technofarm.in/api/products', productData, { headers });
+            const response2 = await api.post('http://localhost:80/api/products', productData, { headers });
     
             if (response2.status === 201 || response2.status === 200) {
                 alert("Item cloned successfully.");
@@ -112,7 +112,7 @@ const ShowProduct = () => {
         };
 
         try {
-            const response = await api.get(`https://technofarm.in/api/products/${id}`, { headers });
+            const response = await api.get(`http://localhost:80/api/products/${id}`, { headers });
     
             if (!response?.data) {
                 alert("Product data not found.");
@@ -156,7 +156,7 @@ const ShowProduct = () => {
                     <table className="min-w-full bg-white border border-gray-300">
                         <thead className="bg-gray-300 font-bold">
                             <tr>
-                                {['No.', 'Product Name',  'Version', 'Labour Cost', 'Comment', 'Stock'].map((header) => (
+                                {['No.', 'Product Name', 'catagory', 'Version', 'Labour Cost', 'Comment', 'Stock'].map((header) => (
                                     <th key={header} className="px-6 py-3 text-left text-md text-gray-700">{header}</th>
                                 ))}
                             </tr>
@@ -172,7 +172,7 @@ const ShowProduct = () => {
 
                                     <td className="px-6 py-4 text-sm text-gray-700">{index + 1}</td>
                                     <td className="px-6 py-4 text-sm text-gray-700">{item.name ?? 'Unknown'}</td>
-                                    {/* <td className="px-6 py-4 text-sm text-gray-700">{item.catagory ?? 'N/A'}</td> */}
+                                    <td className="px-6 py-4 text-sm text-gray-700">{item.catagory ?? 'N/A'}</td>
                                     <td className="px-6 py-4 text-sm text-gray-700">{item.version ?? 'N/A'}</td>
                                     <td className="px-6 py-4 text-sm text-gray-700">{item.labourCost ?? 'N/A'}</td>
                                     <td className="px-6 py-4 text-sm text-gray-700">{item.comment ?? 'No comments'}</td>
@@ -278,11 +278,14 @@ const ShowProduct = () => {
                             }}>Close</button>
 
 
-                            <button onClick={() => clone(selectedProduct.id)} style={{
+                           {role == 'DIRECTOR' &&  <button onClick={() => clone(selectedProduct.id)} style={{
                                 marginTop: "1rem", backgroundColor: "#3b82f6", color: "white",
                                 padding: "0.5rem 1rem", borderRadius: "0.25rem", cursor: "pointer", border: "none"
-                            }}>clone</button>
-
+                            }}>clone</button>}
+                            {role == 'DIRECTOR' && <button onClick={() => navigate(`/AuditProduct/${selectedProduct.id}`)} style={{
+                                marginTop: "1rem", backgroundColor: "#3b82f6", color: "white",
+                                padding: "0.5rem 1rem", borderRadius: "0.25rem", cursor: "pointer", border: "none"
+                            }}>Audit</button>}
                             {role == 'DIRECTOR' && <button onClick={() => navigate(`/EditProduct/${selectedProduct.id}`)} style={{
                                 marginTop: "1rem", backgroundColor: "#3b82f6", color: "white",
                                 padding: "0.5rem 1rem", borderRadius: "0.25rem", cursor: "pointer", border: "none"

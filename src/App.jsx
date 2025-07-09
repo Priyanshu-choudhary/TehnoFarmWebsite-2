@@ -41,6 +41,8 @@ import ShowFundTransfers from './FundTransfer/ShowAllTransfer';
 import AddTransferFund from './FundTransfer/AddFundTransfer';
 import UpdateParty from './Party/UpdateParty';
 import BOMGenerator from './GenerateBOM/BOMGenerator';
+import AuditComponent from './Component/AuditComponent';
+import AuditProduct from './Product/AuditProduct';
 
 
 function App() {
@@ -72,6 +74,7 @@ function App() {
         <Route path="/ShowDeletedPurchases" element={<ShowDeletedPurchases />} />
         <Route path="/ShowProduct" element={<ShowProduct />} />
         <Route path="/EditProduct/:id" element={<EditProduct />} />
+        <Route path="/AuditProduct/:id" element={<AuditProduct />} />
         <Route path="/ShowProduction" element={<ShowProduction />} />
         <Route path="/AddProduction" element={<AddProduction />} />
         <Route path="/AddProduct" element={<AddProduct />} />
@@ -81,6 +84,7 @@ function App() {
         <Route path="/updateParty/:id" element={<UpdateParty />} />
         <Route path="/ShowComponent"  element={<ShowComponent />} />
         <Route path="/AddComponent/:id"  element={<ComponentForm />} />
+        <Route path="/AuditComponent/:id"  element={<AuditComponent />} />
         <Route path="/AddCategory"  element={<AddCategory />} />
         <Route path="/ShowEmployee"  element={<ShowEmployee />} />
         <Route path="/AddEmployee/:id"  element={<EmployeeForm />} />

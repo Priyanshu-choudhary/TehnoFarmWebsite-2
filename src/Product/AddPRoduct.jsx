@@ -37,14 +37,14 @@ const AddProduct = () => {
       return;
     }
     try {
-      const response = await api.get('https://technofarm.in/api/products/add-form-data', {
+      const response = await api.get('http://localhost:80/api/products/add-form-data', {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: 'application/json',
         },
       });
-      const { compCategories, components } = response.data;
-      setCompCategories(compCategories || []);
+      const { productCatagories, components } = response.data;
+      setCompCategories(productCatagories || []);
       setComponents(components || []);
     } catch (error) {
       console.error('Error fetching form data:', error);
@@ -52,6 +52,7 @@ const AddProduct = () => {
       setLoading(false);
     }
   };
+
 
   useEffect(() => {
     fetchFormData();
@@ -93,7 +94,7 @@ const AddProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const confirmed = window.confirm("Are you sure you want to Add this product?");
-  if (!confirmed) return;
+    if (!confirmed) return;
     const formattedData = {
       ...formData,
       compId: formData.compDetails.map((item) => item.compId),
@@ -107,7 +108,7 @@ const AddProduct = () => {
         console.error('No token found in localStorage');
         return;
       }
-      const response = await api.post('https://technofarm.in/api/products', formattedData, {
+      const response = await api.post('http://localhost:80/api/products', formattedData, {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: 'application/json',
@@ -144,19 +145,24 @@ const AddProduct = () => {
               </Grid>
               <Grid item xs={6}>
                 <Autocomplete
-                  options={compCategories}
-                  getOptionLabel={(option) => option}
-                  value={formData.catagory || null}
+                  options={compCategories || []}
+                  getOptionLabel={(option) => option.name || ''}
+                  value={
+                    compCategories?.find((item) => item.name === formData.catagory) || null
+                  }
                   onChange={(event, newValue) =>
                     setFormData((prevData) => ({
                       ...prevData,
-                      catagory: newValue,
+                      catagory: newValue ? newValue.name : '',
                     }))
                   }
-                  renderInput={(params) => <TextField {...params} label="Category" required />}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Category" required />
+                  )}
                 />
-
               </Grid>
+
+
 
               <Grid item xs={6}>
                 <TextField
@@ -184,32 +190,32 @@ const AddProduct = () => {
               {formData.compDetails.map((compDetail, index) => (
                 <React.Fragment key={index}>
                   <Grid item xs={5}>
-               
 
-<Autocomplete
-  options={components}
-  getOptionLabel={(option) => {
-    if (!option) return ''; // fallback if option is null
-    return `${option.id || ''} - ${option.name || ''} - ${option.value || ''} - ${option.pack || ''}`;
-  }}
-  value={components.find((c) => c.id === compDetail.compId) || null}
-  onChange={(event, newValue) =>
-    handleCompDetailChange(index, 'compId', newValue ? newValue.id : null)
-  }
-  renderOption={(props, option) => (
-    <li {...props}>
-      <Box display="flex" gap={1}>
-        <span style={{ fontWeight: 'bold', color: '#1976d2' }}>{option.id}</span> -
-        <span style={{ color: '#4caf50' }}>{option.name}</span> -
-        <span style={{ color: '#ff9800' }}>{option.value}</span> -
-        <span style={{ color: '#9c27b0' }}>{option.pack}</span>
-      </Box>
-    </li>
-  )}
-  renderInput={(params) => (
-    <TextField {...params} label="Component" required />
-  )}
-/>
+
+                    <Autocomplete
+                      options={components}
+                      getOptionLabel={(option) => {
+                        if (!option) return ''; // fallback if option is null
+                        return `${option.id || ''} - ${option.name || ''} - ${option.value || ''} - ${option.pack || ''}`;
+                      }}
+                      value={components.find((c) => c.id === compDetail.compId) || null}
+                      onChange={(event, newValue) =>
+                        handleCompDetailChange(index, 'compId', newValue ? newValue.id : null)
+                      }
+                      renderOption={(props, option) => (
+                        <li {...props}>
+                          <Box display="flex" gap={1}>
+                            <span style={{ fontWeight: 'bold', color: '#1976d2' }}>{option.id}</span> -
+                            <span style={{ color: '#4caf50' }}>{option.name}</span> -
+                            <span style={{ color: '#ff9800' }}>{option.value}</span> -
+                            <span style={{ color: '#9c27b0' }}>{option.pack}</span>
+                          </Box>
+                        </li>
+                      )}
+                      renderInput={(params) => (
+                        <TextField {...params} label="Component" required />
+                      )}
+                    />
 
 
                   </Grid>
@@ -235,7 +241,7 @@ const AddProduct = () => {
 
                 </React.Fragment>
               ))}
-              <Grid  container justifyContent="flex" xs={4}>
+              <Grid container justifyContent="flex" xs={4}>
                 <Button
                   variant="outlined"
                   startIcon={<AddCircle />}

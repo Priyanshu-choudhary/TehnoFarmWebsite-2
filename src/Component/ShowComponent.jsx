@@ -33,7 +33,7 @@ const ShowComponent = () => {
                 });
                 setComponents(response.data);
                 setFilteredComponents(response.data);
-                console.log(response.data);
+
             } catch (error) {
                 console.error('Error fetching component data:', error);
                 setError('Failed to fetch component data.');
@@ -101,6 +101,8 @@ const ShowComponent = () => {
         }
     };
 
+
+
     const closeModal = () => {
         setIsModalOpen(false);
     };
@@ -115,18 +117,18 @@ const ShowComponent = () => {
 
     return (
         <div>
-     
+
             <div className="p-4">
                 <div className='md:flex gap-2 justify-between'>
                     <h2 className="text-3xl font-semibold text-gray-800 mb-4">Components</h2>
-                    {role=='DIRECTOR' && <button className='bg-blue-400 rounded-md font-bold px-2 mt-2 mr-5  h-10 hover:bg-blue-600' onClick={() => { navigate(`/AddCategory`) }} >
+                    {role == 'DIRECTOR' && <button className='bg-blue-400 rounded-md font-bold px-2 mt-2 mr-5  h-10 hover:bg-blue-600' onClick={() => { navigate(`/AddCategory`) }} >
                         Add Category +
                     </button>}
-                    {role=='DIRECTOR' &&  <button className='bg-blue-400 rounded-md font-bold px-2 mt-2  h-10 hover:bg-blue-600' onClick={() => { navigate(`/AddComponent/:id`) }} >
+                    {role == 'DIRECTOR' && <button className='bg-blue-400 rounded-md font-bold px-2 mt-2  h-10 hover:bg-blue-600' onClick={() => { navigate(`/AddComponent/:id`) }} >
                         Add Component +
                     </button>}
 
-                </div>   
+                </div>
                 {/* Autocomplete field for category selection */}
                 <div className='md:flex gap-2'>
                     <Autocomplete
@@ -212,9 +214,15 @@ const ShowComponent = () => {
                                 <button onClick={closeModal} className="bg-blue-500 text-white px-4 py-2 rounded">
                                     Close
                                 </button>
-                                <button onClick={() => navigate(`/AddComponent/${selectedComponent.id}`)} className="bg-blue-500 text-white px-4 py-2 rounded">
+                                {role == 'DIRECTOR' && <button onClick={() => navigate(`/AuditComponent/${selectedComponent.id}`)} className="bg-blue-500 text-white px-4 py-2 rounded">
+                                    Audit
+                                </button>}
+
+                                {role == 'DIRECTOR' && <button onClick={() => navigate(`/AddComponent/${selectedComponent.id}`)} className="bg-blue-500 text-white px-4 py-2 rounded">
                                     Update
                                 </button>
+                                }
+
                             </div>
                         </div>
                     </div>

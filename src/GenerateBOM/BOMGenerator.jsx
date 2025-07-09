@@ -8,6 +8,9 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import api from '/src/API';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+
 
 const BOMGenerator = () => {
   const [loading, setLoading] = useState(true);
@@ -15,6 +18,34 @@ const BOMGenerator = () => {
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [bomData, setBomData] = useState([]);
   const [calculating, setCalculating] = useState(false);
+  const [total, setTotal] = useState(0);
+  const [actualCostTotal, setActualCostTotal] = useState(0);
+  const [ActualCost, setActualCost] = useState(false); // Add this line
+
+  const handleChange = (event) => {
+    setActualCost(event.target.checked);
+  };
+
+  // Calculate totals whenever bomData or ActualCost changes
+  useEffect(() => {
+    if (bomData?.componentQuantities) {
+      let calculatedTotal = 0;
+      let calculatedActualCostTotal = 0;
+
+      bomData.componentQuantities.forEach(component => {
+        const availableStock = ActualCost ? Math.max(0, component.component.stock) : component.component.stock ?? 0;
+        const requiredQty = component.quantity - availableStock;
+        const netPrice = requiredQty * (component.component.price ?? 0);
+
+        calculatedTotal += component.quantity * (component.component.price ?? 0);
+        calculatedActualCostTotal += Math.max(0, netPrice);
+      });
+
+      setTotal(calculatedTotal);
+      setActualCostTotal(calculatedActualCostTotal);
+    }
+  }, [bomData, ActualCost]);
+
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -110,6 +141,10 @@ const BOMGenerator = () => {
       </Container>
     );
   }
+  const totalCost = products.reduce((sum, product) => {
+    const price = Math.max(0, product.netPrice); // Prevent negative prices
+    return sum + price;
+  }, 0);
 
   return (
     <Container maxWidth="lg">
@@ -181,6 +216,17 @@ const BOMGenerator = () => {
             {calculating ? <CircularProgress size={24} /> : 'Generate BOM'}
           </Button>
         </Box>
+        {/* <FormControlLabel
+          control={
+            <Checkbox
+              size='sm'
+              checked={ActualCost}
+              onChange={handleChange}
+              color="primary"
+            />
+          }
+          label="Calculate the actual Cost of the products."
+        /> */}
       </Paper>
 
       {bomData.componentQuantities && (
@@ -210,42 +256,41 @@ const BOMGenerator = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {bomData?.componentQuantities?.map((component, index) => (
-              <TableRow key={index}>
-  <TableCell>{component.component.name}</TableCell>
-  <TableCell align="right">{component.component.catagory}</TableCell>
-  <TableCell align="right">{component.component.value}</TableCell>
-  <TableCell align="right">{component.component.pack}</TableCell>
-  <TableCell align="right">{component.component.price}</TableCell>
-  <TableCell align="right">{component.quantity}</TableCell>
-  <TableCell align="right">{component.component.stock}</TableCell>
+                {bomData?.componentQuantities?.map((component, index) => {
+                  const availableStock = ActualCost ? Math.max(0, component.component.stock) : component.component.stock ?? 0;
+                  const requiredQtyRaw = component.quantity - availableStock;
+                  const requiredQty = Math.max(0, requiredQtyRaw); // Never negative
+                  const netPrice = requiredQty * (component.component.price ?? 0);
 
-  {(() => {
-    const availableStock = component.component.stock ?? 0;
-    const requiredQtyRaw = component.quantity - availableStock;
-    const requiredQty = Math.max(0, requiredQtyRaw); // Never negative
-    const netPrice = requiredQty * (component.component.price ?? 0);
+                  const qtyBg = requiredQty > 0 ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700';
+                  const priceBg = netPrice > 0 ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700';
 
-    const qtyBg = requiredQty > 0 ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700';
-    const priceBg = netPrice > 0 ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700';
-
-    return (
-      <>
-        <TableCell align="right" className={qtyBg}>
-          {requiredQty}
-        </TableCell>
-        <TableCell align="right" className={priceBg}>
-          ₹{netPrice.toFixed(2)}
-        </TableCell>
-      </>
-    );
-  })()}
-</TableRow>
-
-                ))}
+                  return (
+                    <TableRow key={index}>
+                      <TableCell>{component.component.name}</TableCell>
+                      <TableCell align="right">{component.component.catagory}</TableCell>
+                      <TableCell align="right">{component.component.value}</TableCell>
+                      <TableCell align="right">{component.component.pack}</TableCell>
+                      <TableCell align="right">{component.component.price}</TableCell>
+                      <TableCell align="right">{component.quantity}</TableCell>
+                      <TableCell align="right">
+                        {ActualCost ? Math.max(0, component.component.stock) : component.component.stock}
+                      </TableCell>
+                      <TableCell align="right" className={qtyBg}>
+                        {requiredQty}
+                      </TableCell>
+                      <TableCell align="right" className={priceBg}>
+                        ₹{Math.max(0, netPrice).toFixed(2)}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
                 <TableRow >
-                  <TableCell colSpan={3} align="right"><strong className='text-2xl'>Total Cost = </strong></TableCell>
-                  <TableCell  align="right"><strong className='text-2xl'>{bomData?.totalPrice.toFixed(1)}</strong></TableCell>
+                  <TableCell  align="left" colSpan={3} ><strong className='text-xl'>Total Production Cost = </strong></TableCell>
+                  <TableCell align="left" ><strong className='text-2xl'> ₹{bomData?.totalPrice.toFixed(1)}</strong></TableCell>
+
+                  <TableCell colSpan={3} ><strong className='text-xl'>Total Actual Cost = </strong></TableCell>
+                  <TableCell ><strong className='text-2xl'> ₹{actualCostTotal.toFixed(2)}</strong></TableCell>
                 </TableRow>
               </TableBody>
             </Table>

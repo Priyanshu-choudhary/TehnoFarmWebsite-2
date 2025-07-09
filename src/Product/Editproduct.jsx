@@ -43,7 +43,7 @@ const EditProduct = () => {
     }
     try {
       // Fetch product details by ID
-      const response = await api.get(`https://technofarm.in/api/products/${id}`, {
+      const response = await api.get(`http://localhost:80/api/products/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: 'application/json',
@@ -64,14 +64,16 @@ const EditProduct = () => {
       });
 
       // Fetch form data (e.g., categories and components)
-      const formResponse = await api.get('https://technofarm.in/api/products/add-form-data', {
+      const formResponse = await api.get('http://localhost:80/api/products/add-form-data', {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: 'application/json',
         },
       });
-      const { compCategories, components } = formResponse.data;
-      setCompCategories(compCategories || []);
+      const { productCatagories, components } = formResponse.data;
+      
+      setCompCategories(productCatagories.name || []);
+
       setComponents(components || []);
     } catch (error) {
       console.error('Error fetching product or form data:', error);
@@ -96,7 +98,7 @@ const EditProduct = () => {
       return;
     }
     try {
-      const response = await api.get(`https://technofarm.in/api/products/${id}`, {
+      const response = await api.get(`http://localhost:80/api/products/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: 'application/json',
@@ -105,7 +107,7 @@ const EditProduct = () => {
       const productData = response.data;
       setFormData({
         name: productData.name,
-        catagory: productData.catagory,
+        catagory: productData.productCatagories,
         isActive: productData.isActive,
         version: productData.version,
         comment: productData.comment,
@@ -129,14 +131,14 @@ const EditProduct = () => {
       return;
     }
     try {
-      const formResponse = await api.get('https://technofarm.in/api/products/add-form-data', {
+      const formResponse = await api.get('http://localhost:80/api/products/add-form-data', {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: 'application/json',
         },
       });
-      const { compCategories, components } = formResponse.data;
-      setCompCategories(compCategories || []);
+      const { productCatagories, components } = formResponse.data;
+      setCompCategories(productCatagories || []);
       setComponents(components || []);
     } catch (error) {
       console.error('Error fetching form lists:', error);
@@ -194,7 +196,7 @@ const EditProduct = () => {
         console.error('No token found in localStorage');
         return;
       }
-      const response = await api.put(`https://technofarm.in/api/products/${id}`, formattedData, {
+      const response = await api.put(`http://localhost:80/api/products/${id}`, formattedData, {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: 'application/json',
@@ -231,14 +233,24 @@ const EditProduct = () => {
                 />
               </Grid>
               <Grid item xs={6}>
-                <Autocomplete
-                  options={compCategories}
-                  getOptionLabel={(option) => option}
-                  onChange={(event, newValue) => handleInputChange({ target: { name: 'catagory', value: newValue } })}
-                  value={formData.catagory}
-                  renderInput={(params) => <TextField {...params} label="Category" required />}
-                />
-              </Grid>
+  <Autocomplete
+    options={compCategories || []}
+    getOptionLabel={(option) => option.name || ''}
+    value={
+      compCategories?.find((item) => item.name === formData.catagory) || null
+    }
+    onChange={(event, newValue) =>
+      handleInputChange({
+        target: {
+          name: 'catagory',
+          value: newValue ? newValue.name : '',
+        },
+      })
+    }
+    renderInput={(params) => <TextField {...params} label="Category" required />}
+  />
+</Grid>
+
               <Grid item xs={6}>
                 <TextField
                   label="Version"

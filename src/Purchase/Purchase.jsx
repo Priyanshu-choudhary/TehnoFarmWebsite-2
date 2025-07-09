@@ -43,7 +43,7 @@ useEffect(() => {
 
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`https://technofarm.in/api/purchase/${id}`, {
+            const response = await fetch(`http://localhost:80/api/purchase/${id}`, {
                 method: 'DELETE',
                 headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' },
             });

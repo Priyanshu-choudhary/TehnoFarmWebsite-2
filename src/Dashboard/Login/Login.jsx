@@ -11,7 +11,7 @@ const Login = () => {
         event.preventDefault(); // Prevent page refresh
 
         try {
-            const response = await axios.post('https://technofarm.in/api/authenticate', {
+            const response = await axios.post('http://localhost:80/api/authenticate', {
                 username,
                 password,
             });

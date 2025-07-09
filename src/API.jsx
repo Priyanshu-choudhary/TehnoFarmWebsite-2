@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://technofarm.in',
+  baseURL: 'http://localhost:80',
   withCredentials: true, // Include cookies in every request
 });
 
