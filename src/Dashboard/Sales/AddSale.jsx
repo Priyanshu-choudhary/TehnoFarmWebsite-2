@@ -73,7 +73,9 @@ const AddSaleForm = () => {
     };
 
     fetchSales();
-  }, []);
+    console.log(parties);
+    
+  }, [parties]);
 
   useEffect(() => {
     const fetchParties = async () => {
@@ -85,15 +87,15 @@ const AddSaleForm = () => {
           return;
         }
 
-        const response = await api.get('/api/party', {
+        const response = await api.get('/api/party/all', {
           headers: {
             Authorization: `Bearer ${token}`,
             Accept: 'application/json',
           },
         });
 
-
-        setParties(response.data.content || []);
+        
+        setParties(response.data || []);
       } catch (error) {
         console.error('Error fetching party data:', error);
       } finally {
@@ -244,7 +246,8 @@ const AddSaleForm = () => {
 
                   <Autocomplete
                     options={parties}
-
+                   
+                    
                     getOptionLabel={(option) =>`${option.name} - ${option.city}`}
                     onChange={(event, newValue) => {
                       handleInputChange({ target: { name: 'partyId', value: newValue ? newValue.id : '' } });
@@ -255,6 +258,7 @@ const AddSaleForm = () => {
                     value={parties.find(party => party.id === formData.partyId) || null}
                     isOptionEqualToValue={(option, value) => option.id === value.id}
                   />
+                
                 </FormControl>
               </Grid>
               <Grid item xs={12}>

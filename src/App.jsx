@@ -43,6 +43,7 @@ import UpdateParty from './Party/UpdateParty';
 import BOMGenerator from './GenerateBOM/BOMGenerator';
 import AuditComponent from './Component/AuditComponent';
 import AuditProduct from './Product/AuditProduct';
+import AttendanceSystem from './Attendance/Attendance';
 
 
 function App() {
@@ -96,6 +97,8 @@ function App() {
         <Route path="/ShowFundTransfers"  element={<ShowFundTransfers />} />
         <Route path="/AddFundTransfers"  element={<AddTransferFund />} />
         <Route path="/BOMGenerator"  element={<BOMGenerator />} />
+
+        <Route path="/Attendance"  element={<AttendanceSystem />} />
 
       </Routes>
     </Router>

@@ -50,7 +50,7 @@ const ShowProduct = () => {
         };
     
         try {
-            const response = await api.get(`http://localhost:80/api/products/${id}`, { headers });
+            const response = await api.get(`https://technofarm.in/api/products/${id}`, { headers });
     
             if (!response?.data) {
                 alert("Product data not found.");
@@ -84,7 +84,7 @@ const ShowProduct = () => {
                 compQuant
             };
     
-            const response2 = await api.post('http://localhost:80/api/products', productData, { headers });
+            const response2 = await api.post('https://technofarm.in/api/products', productData, { headers });
     
             if (response2.status === 201 || response2.status === 200) {
                 alert("Item cloned successfully.");
@@ -112,7 +112,7 @@ const ShowProduct = () => {
         };
 
         try {
-            const response = await api.get(`http://localhost:80/api/products/${id}`, { headers });
+            const response = await api.get(`https://technofarm.in/api/products/${id}`, { headers });
     
             if (!response?.data) {
                 alert("Product data not found.");

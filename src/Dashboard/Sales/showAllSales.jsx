@@ -94,7 +94,7 @@ useEffect(() => {
         if (!confirmed) return; // If the user cancels, exit the function
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`http://localhost:80/api/sales/${id}`, {
+            const response = await fetch(`https://technofarm.in/api/sales/${id}`, {
                 method: 'DELETE',
                 headers: {
                     Authorization: `Bearer ${token}`,

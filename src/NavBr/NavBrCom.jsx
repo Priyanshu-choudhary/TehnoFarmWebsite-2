@@ -33,6 +33,7 @@ function Navbar() {
         { to: "/ShowProduct", label: "Product" },
         { to: "/ShowComponent", label: "Component" },
         { to: "/ShowEmployee", label: "Employee" },
+        { to: "/attendance", label: "Attendance" },
         { to: "/Other", label: "Other" },
       ]
     : [

@@ -37,7 +37,7 @@ const AddProduct = () => {
       return;
     }
     try {
-      const response = await api.get('http://localhost:80/api/products/add-form-data', {
+      const response = await api.get('https://technofarm.in/api/products/add-form-data', {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: 'application/json',
@@ -108,7 +108,7 @@ const AddProduct = () => {
         console.error('No token found in localStorage');
         return;
       }
-      const response = await api.post('http://localhost:80/api/products', formattedData, {
+      const response = await api.post('https://technofarm.in/api/products', formattedData, {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: 'application/json',

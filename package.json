@@ -3,8 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "http://localhost:80",
-
+  "homepage": "https://technofarm.in",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -12,13 +11,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@emotion/react": "^11.13.3",
-    "@emotion/styled": "^11.13.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
     "@fortawesome/fontawesome-free": "^6.6.0",
     "@heroicons/react": "^1.0.6",
     "@mui/icons-material": "^6.1.5",
     "@mui/lab": "^6.0.0-beta.13",
-    "@mui/material": "^6.1.5",
+    "@mui/material": "^6.5.0",
+    "@mui/x-data-grid": "^8.10.0",
     "@mui/x-date-pickers": "^7.22.0",
     "@popperjs/core": "^2.11.8",
     "axios": "^1.7.7",

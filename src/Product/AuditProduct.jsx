@@ -48,7 +48,7 @@ const AuditProduct = () => {
                 employeeId: "1", // Replace with actual logged-in employee ID if available
             };
 
-            await axios.post('http://localhost:80/api/products/audit', requestBody, {
+            await axios.post('https://technofarm.in/api/products/audit', requestBody, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

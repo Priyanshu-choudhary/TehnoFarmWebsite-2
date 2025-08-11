@@ -54,14 +54,14 @@ const AddPurchaseForm = () => {
                     setLoading(false);
                     return;
                 }
-                const response = await api.get('http://localhost:80/api/purchase/add-form-data', {
+                const response = await api.get('https://technofarm.in/api/purchase/add-form-data', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                         Accept: 'application/json',
                     },
                 });
                 setEmployees(response.data.directors || []);
-                setParties(response.data.party || []);
+                // setParties(response.data.party || []);
                 setComponents(response.data.component || []);
             } catch (error) {
                 console.error('Error fetching form data:', error);
@@ -71,6 +71,36 @@ const AddPurchaseForm = () => {
         };
         fetchData();
     }, []);
+
+    
+      useEffect(() => {
+        const fetchParties = async () => {
+          try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+              console.error('No token found in localStorage');
+              setLoading(false);
+              return;
+            }
+    
+            const response = await api.get('/api/party/all', {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: 'application/json',
+              },
+            });
+    
+            
+            setParties(response.data || []);
+          } catch (error) {
+            console.error('Error fetching party data:', error);
+          } finally {
+            setLoading(false);
+          }
+        };
+    
+        fetchParties();
+      }, []);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -123,7 +153,7 @@ const AddPurchaseForm = () => {
                 setLoading(false);
                 return;
             }
-            const response = await api.post('http://localhost:80/api/purchase/add', purchaseData, {
+            const response = await api.post('https://technofarm.in/api/purchase/add', purchaseData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     Accept: 'application/json',
